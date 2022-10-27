@@ -20,7 +20,8 @@ class Cadastro : AppCompatActivity() {
     private lateinit var binding: ActivityCadastroBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var storage : StorageReference
-    private lateinit var database : DatabaseReference
+    private lateinit var database : FirebaseDatabase
+    private lateinit var dbRef : DatabaseReference
     private lateinit var imgUri : Uri
     val imagem = 1
 
@@ -30,126 +31,79 @@ class Cadastro : AppCompatActivity() {
         binding = ActivityCadastroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val email = binding.editEmailC.text.toString()
-        val senha = binding.editSenhaC.text.toString()
-
-
-        database = FirebaseDatabase.getInstance().getReference("Usuarios")
-        storage = FirebaseStorage.getInstance().getReference().child("Foto")
         auth = FirebaseAuth.getInstance()
 
+        // a linha abaixo é usada para pegar a
+        // instancia do banco de dados
+        database = FirebaseDatabase.getInstance();
 
-        //inicio de uma nova activity
-        //da tela de cadastro para a de login
+        // linha abaixo é  usada para pegar  a referencia do banco de dados firebase.
+        dbRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+
+
         binding.textLogin.setOnClickListener {
             val intent = Intent(this,login::class.java)
             startActivity(intent)
         }
 
 
-        //"botao" camera, que disponibilizara somente arquivos png,jpg
-        binding.btnCamera.setOnClickListener{
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.setType("image/*")
-            startActivityForResult(intent,imagem)
-        }
-
-
         binding.btnCriarConta.setOnClickListener {
-            //caso algum dos edittexts estejam vazio ira aparecer uma mensangem para
-            //preencher todos os campos.
-            //binding vai iniciar o meu campo da onde eu vou pegar as informações do usaurio,
-            //sem precisar fazer a declaração e o findviewbyid
-            //e tambem ja o transforma de text para string, sem precisar fazer ou declaracao...
+            val email = binding.editEmailC.text.toString()
+            val senha = binding.editSenhaC.text.toString()
+            val nome = binding.editNomeC.text.toString()
 
-            if(binding.editSenhaC.text.toString().isEmpty() || binding.editEmailC.text.toString().isEmpty()
-                || binding.editNomeC.text.toString().isEmpty()){
+            if(senha.isEmpty() || email.isEmpty() || nome.isEmpty()){
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             }
 
-            //senha com menos de 4 caracteres ira aparecer erro e uma mensagem
-            if(binding.editSenhaC.text.toString().length < 6){
-                binding.editSenhaC.setError("Minimo 6 caracteres")
+            else if (senha.length < 6){
+                binding.editSenhaC.setError("Minímo 6 caracteres")
             }
 
+            // se todas a condições acima forem verdadeiras
+            // criara se o createUserWithEmailAndPassword
+            // usando o objeto auth e passando a
+            // senah e o email
             else{
-                val nome = binding.editNomeC.text.toString()
-                val imgUrl = binding.btnCamera.toString()
-                val uId = database.push().key!!
 
-                uploadInfo(email,senha)
-                criarConta(nome, email, imgUrl, senha,uId)
-            }
-
-        }
-    }
+                auth.createUserWithEmailAndPassword(email, senha)
+                    .addOnCompleteListener(this) {
+                        if (it.isSuccessful) {
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+                            Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
 
-        if(requestCode == imagem){
-            if(resultCode == RESULT_OK){
-                val imageData = data!!.getData()
+                            //salvarImagem()
+                            adicionarRealTime(nome,senha,email)
 
-                val imageNome : StorageReference = storage.child("imagem" + imageData!!.lastPathSegment)
-                imageNome.putFile(imageData).addOnSuccessListener {
-                    Toast.makeText(this, "Imagem salva", Toast.LENGTH_SHORT).show()
-
-                }
-            }
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
+                        }
+                 }
 
         }
 
+
     }
 
 
+}
 
-    private fun uploadInfo(email: String, senha: String) {
+    private fun adicionarRealTime(nome: String, senha: String, email: String) {
 
-        Toast.makeText(this, "FILHA DA PUTA", Toast.LENGTH_SHORT).show()
+        val uId = dbRef.push().key
+        var usuario = Usuario(uId,nome,email,senha)
 
-        val nome = binding.editNomeC.text.toString()
-        val imgUrl = binding.btnCamera.toString()
-        val uId = database.push().key!!
-
-        //vai criar um usuario a partir do email e da senha
-        //essa parte vai ser utilizada para o usuario fazer o login
-        //atraves desses dois campos que seram salvos no authentication do firebase
-        auth.createUserWithEmailAndPassword(email, senha)
-            .addOnCompleteListener(this) { task ->
-                if(task.isSuccessful) {
-
-                    Toast.makeText(this, "Conta criada!", Toast.LENGTH_SHORT).show()
-
-                    val intent= Intent(this,bemVindo::class.java)
-                    finish()
-                    startActivity(intent)
+        if(uId != null) {
+            dbRef.child(uId).setValue(usuario)
+                .addOnCompleteListener {
+                    Toast.makeText(this, "Sucesso!", Toast.LENGTH_SHORT).show()
                 }
+        }
 
-                else{
-                    Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
-                }
 
-            }
     }
 
 
-
-
-   fun criarConta(uId:String,nome:String,email:String,imgUrl:String,senha:String){
-
-
-       val usuarios = Usuario(nome,email,imgUrl,senha)
-
-       database.child(uId).setValue(usuarios)
-           .addOnCompleteListener {
-
-               Toast.makeText(this, "Data inserted successfully", Toast.LENGTH_LONG).show()
-
-           }.addOnFailureListener { err ->
-               Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_LONG).show()
-           }
-
-   }
 }
