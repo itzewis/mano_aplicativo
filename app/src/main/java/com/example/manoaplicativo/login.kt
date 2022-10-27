@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class login : AppCompatActivity() {
     private lateinit var editEmail: EditText
@@ -15,7 +16,7 @@ class login : AppCompatActivity() {
     private lateinit var btnEntrar: Button
     private lateinit var cadastro: TextView
     private lateinit var btnEsqueci: TextView
-    //private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
 
     @SuppressLint("MissingInflatedId")
@@ -25,7 +26,7 @@ class login : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        //mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         editEmail = findViewById(R.id.editEmail)
         editSenha = findViewById(R.id.editSenha)
@@ -43,6 +44,39 @@ class login : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnEntrar.setOnClickListener {
+            val email = editEmail.text.toString()
+            val senha = editSenha.text.toString()
+
+            //condições
+            if (senha.isNotBlank() && email.isNotEmpty()){
+                entrar(email, senha);
+            }
+
+            if(senha.length < 6){
+                editSenha.setError("Minimo 6 caracteres")
+            }
+
+            if(senha.isEmpty() || email.isEmpty()){
+                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+
+    private fun entrar(email: String, senha: String){
+        auth.signInWithEmailAndPassword(email, senha)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(this@login, MainActivity::class.java)
+                    finish()
+                    Toast.makeText(this, "Carregando...", Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@login, "Usuário não encontrado!", Toast.LENGTH_SHORT).show()
+                }
+            }
 
     }
 }

@@ -5,62 +5,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="8dp"
+    app:cardElevation="2dp"
     app:cardCornerRadius="8dp"
     android:layout_margin="16dp"
     tools:context=".list_publicacao">
 
     <LinearLayout
-        android:layout_width="375dp"
-        android:layout_height="128dp"
+        android:id="@+id/linear_listp"
+        android:layout_width="388dp"
+        android:layout_height="119dp"
         android:layout_marginVertical="6dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
-
-        <TextView
-            android:id="@+id/nomeUsuario"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Emilly Carvalho"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgUsuario"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="start"
-            android:src="@drawable/ic_camera" />
+            <TextView
+                android:id="@+id/nomeUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Emilly Carvalho"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Aulas de Inglês"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/descricao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Dou aula de ingles, para todas as idades, ja fui professora de ingles na escola Rockfeller durante dois anos. Atendo em domicilio."
-            android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Aulas de Inglês"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
 
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top">
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgUsuario"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="top"
+                android:src="@drawable/ic_camera" />
 
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/descricao"
+            android:layout_width="360dp"
+            android:layout_height="31dp"
+            android:text="Dou aula de ingles, para todas as idades, ja fui professora de ingles na escola Rockfeller durante dois anos. Atendo em domicilio."
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
