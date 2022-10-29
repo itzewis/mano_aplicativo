@@ -1,10 +1,16 @@
 package com.example.manoaplicativo
 
+
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.app.appsearch.SetSchemaRequest.READ_EXTERNAL_STORAGE
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.databinding.ActivityCadastroBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +30,7 @@ class Cadastro : AppCompatActivity() {
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
     private lateinit var imgUrl : Uri
+    private var STORAGE_PERMISSION_CODE = 113
 
 
 
@@ -51,10 +58,9 @@ class Cadastro : AppCompatActivity() {
 
         //botao para o acesso a galeria para a escolha da foto de perfil
         binding.btnCamera.setOnClickListener {
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            startActivityForResult(intent,1)
+
+            pedirPermissao(android.Manifest.permission.READ_EXTERNAL_STORAGE,STORAGE_PERMISSION_CODE)
+
         }
 
 
@@ -81,8 +87,6 @@ class Cadastro : AppCompatActivity() {
                         if (it.isSuccessful) {
                             Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
 
-                            adicionarRealTime(imgUrl = String())
-
                             salvarImagem()
 
                             finish()
@@ -99,6 +103,51 @@ class Cadastro : AppCompatActivity() {
 
 }
 
+    //pedi permissao do usuario para ter acesso a galeria
+    private fun pedirPermissao(permission: String, requestCode: Int){
+
+        if(ContextCompat.checkSelfPermission(this,permission)==PackageManager.PERMISSION_DENIED){
+
+            ActivityCompat.requestPermissions(this, arrayOf(permission),requestCode)
+
+        }
+
+        else{
+            //caso o acesso seja permitido vai da acesso a galeria
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            startActivityForResult(intent,1)
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(requestCode == STORAGE_PERMISSION_CODE){
+            if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Acesso permitido", Toast.LENGTH_SHORT).show()
+
+
+                //caso o acesso seja permitido vai da acesso a galeria
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = "image/*"
+                startActivityForResult(intent,1)
+
+            }else{
+                Toast.makeText(this, "Acesso negado", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    //salva a imagem no storage firebase
     private fun salvarImagem() {
         val referencia = storage.reference.child("imagem").child(Date().time.toString())
         referencia.putFile(imgUrl).addOnCompleteListener{
@@ -113,13 +162,15 @@ class Cadastro : AppCompatActivity() {
     }
 
 
+
     //os campos presentes na tela cadastro serem adicionados no realtime database
     //logo apos a criacao do createUserWithEmailAndPassword
     private fun adicionarRealTime(imgUrl: String) {
 
-        //para que cada Id seja diferente um do outro e que um dado nao substitua o outro
+        //para que cada Id do usuario seja diferente uma da outra e que um dado nao seja substitua pelo o outro
         val uId = dbRef.push().key
 
+        //transformação vdas variaves de texto para string
         val email = binding.editEmailC.text.toString()
         val senha = binding.editSenhaC.text.toString()
         val nome = binding.editNomeC.text.toString()
@@ -138,7 +189,8 @@ class Cadastro : AppCompatActivity() {
     }
 
 
-    //para que a imagem escolhida apareca la no btnCamera
+
+    //para que a imagem escolhida apareca la no campo btnCamera
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

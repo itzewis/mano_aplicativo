@@ -24,6 +24,7 @@ class list_Adapter (private val list_Adapter: Array<Pulicacao>) :
         holder.descricao.text = itemAtual.descricao
         holder.titulo.text = itemAtual.titulo
         holder.nomeUsuario.text = itemAtual.nome
+        //holder.imgUsuario.setImageURI(Uri? =uri) = itemAtual.imgUsuario
 
 
     }
@@ -31,6 +32,7 @@ class list_Adapter (private val list_Adapter: Array<Pulicacao>) :
     override fun getItemCount(): Int {
 
         return  list_Adapter.size
+
     }
 
 

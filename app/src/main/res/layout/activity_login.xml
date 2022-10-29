@@ -21,9 +21,9 @@
 
     <View
         android:id="@+id/container"
+        style="@style/container"
         android:layout_width="442dp"
         android:layout_height="502dp"
-        style="@style/container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
@@ -50,16 +50,15 @@
         android:layout_width="322dp"
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
+        android:autofillHints="emailAddress"
         android:drawableStart="@drawable/ic_email"
         android:drawablePadding="7dp"
         android:hint="@string/email"
-        android:autofillHints="emailAddress"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titulo" />
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEntrar"
@@ -78,14 +77,14 @@
 
     <TextView
         android:id="@+id/btnEsqueceusuaSenha"
-        android:layout_width="153dp"
-        android:layout_height="35dp"
-        android:layout_marginBottom="124dp"
+        android:layout_width="137dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="128dp"
         android:text="@string/esqueci"
         android:textColor="#0500FD"
         app:layout_constraintBottom_toTopOf="@+id/cadastro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintHorizontal_bias="0.839"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
