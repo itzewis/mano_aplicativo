@@ -10,69 +10,100 @@
     android:layout_margin="16dp"
     tools:context=".list_publicacao">
 
+<LinearLayout
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
     <LinearLayout
-        android:id="@+id/linear_listp"
-        android:layout_width="388dp"
-        android:layout_height="119dp"
-        android:layout_marginVertical="6dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/uFoto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/uNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Emilly Carvalho"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
 
+
             <TextView
-                android:id="@+id/nomeUsuario"
+                android:id="@+id/valor"
+                android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Emilly Carvalho"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="3dp"
+                android:text="R$ 100"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
 
-            <TextView
-                android:id="@+id/titulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Aulas de Inglês"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-
         </LinearLayout>
 
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgUsuario"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="top"
-                android:src="@drawable/ic_camera" />
 
-        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
         <TextView
-            android:id="@+id/descricao"
-            android:layout_width="360dp"
-            android:layout_height="31dp"
-            android:text="Dou aula de ingles, para todas as idades, ja fui professora de ingles na escola Rockfeller durante dois anos. Atendo em domicilio."
-            android:textColor="@color/black" />
+            android:id="@+id/titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/email"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:id="@+id/descricao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/textBemVindo" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
 
 
 </androidx.cardview.widget.CardView>

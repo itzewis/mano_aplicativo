@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val homeFragment = Home()
         val chatFragment = Chat()

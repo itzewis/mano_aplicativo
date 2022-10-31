@@ -85,11 +85,9 @@ class Cadastro : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
-                            Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
-
                             salvarImagem()
 
-                            finish()
+
                         } else {
                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
                         }
@@ -168,7 +166,7 @@ class Cadastro : AppCompatActivity() {
     private fun adicionarRealTime(imgUrl: String) {
 
         //para que cada Id do usuario seja diferente uma da outra e que um dado nao seja substitua pelo o outro
-        val uId = dbRef.push().key
+        val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
         //transformação vdas variaves de texto para string
         val email = binding.editEmailC.text.toString()
@@ -181,7 +179,12 @@ class Cadastro : AppCompatActivity() {
         if(uId != null) {
             dbRef.child(uId).setValue(usuario)
                 .addOnCompleteListener {
-                    Toast.makeText(this, "Sucesso!", Toast.LENGTH_SHORT).show()
+
+                    Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this,bemVindo::class.java)
+                    startActivity(intent)
+                    finish()
                 }
 
         }

@@ -2,12 +2,15 @@ package com.example.manoaplicativo
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 
 class login : AppCompatActivity() {
@@ -17,6 +20,7 @@ class login : AppCompatActivity() {
     private lateinit var cadastro: TextView
     private lateinit var btnEsqueci: TextView
     private lateinit var auth: FirebaseAuth
+    private var LOCATION_PERMISSION = 99
 
 
     @SuppressLint("MissingInflatedId")
@@ -50,7 +54,9 @@ class login : AppCompatActivity() {
 
             //condições
             if (senha.isNotBlank() && email.isNotEmpty()){
-                entrar(email, senha);
+                entrar(email, senha)
+
+
             }
 
             if(senha.length < 6){
@@ -79,4 +85,22 @@ class login : AppCompatActivity() {
             }
 
     }
+
+
+   /* private fun pedirPermissao(permission: String, requestCode: Int){
+
+        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED){
+
+            Toast.makeText(this, "permitido", Toast.LENGTH_SHORT).show()
+
+        }
+
+        else{
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),100)
+            Toast.makeText(this, "negado", Toast.LENGTH_SHORT).show()
+        }
+
+    }*/
+
 }
