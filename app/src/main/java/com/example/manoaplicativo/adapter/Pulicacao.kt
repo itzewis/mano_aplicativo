@@ -8,7 +8,6 @@ data class Pulicacao(
     var pubId : String? = null,
     var titulo : String? = null,
     var uId : String? = null,
-    var uImageUrl : String? = null,
     var valor : String? = null
 
 

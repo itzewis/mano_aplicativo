@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.graphics.Insets.add
 import androidx.core.view.OneShotPreDrawListener.add
@@ -29,15 +30,13 @@ class Home : Fragment() {
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
 
-    private lateinit var adapitador: list_Adapter
+    private lateinit var lista_publicacao : ArrayList<Pulicacao>
     private lateinit var recyclerView: RecyclerView
 
     lateinit var valor : ArrayList<String>
     lateinit var descricao : ArrayList<String>
     lateinit var titulo : ArrayList<String>
 
-
-    var list = ArrayList<list_Adapter>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +45,53 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         val fragmento =  inflater.inflate(R.layout.fragment_home, container, false)
 
+        recyclerView = fragmento.findViewById(R.id.areaPublicacao)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
+
+        lista_publicacao = arrayListOf<Pulicacao>()
+
+        pegarDados()
+
         return fragmento
     }
+
+    private fun pegarDados() {
+
+        recyclerView.visibility = View.GONE
+
+
+
+        dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes")
+
+        dbRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+
+                    if (snapshot.exists()) {
+                        for (publiSnap in snapshot.children) {
+                            val dados = publiSnap.getValue(Pulicacao::class.java)
+                            lista_publicacao.add(dados!!)
+                        }
+                        val mAdapter = list_Adapter(lista_publicacao)
+                        recyclerView.adapter = mAdapter
+
+                        recyclerView.visibility = View.VISIBLE
+
+                    }
+
+                } catch (ex: Exception) {
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+
 
 }
 

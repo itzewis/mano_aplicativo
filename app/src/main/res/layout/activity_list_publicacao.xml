@@ -10,6 +10,7 @@
     android:layout_margin="16dp"
     tools:context=".list_publicacao">
 
+
 <LinearLayout
     android:layout_margin="8dp"
     android:orientation="vertical"
@@ -104,6 +105,7 @@
 
 
 </LinearLayout>
+
 
 
 </androidx.cardview.widget.CardView>

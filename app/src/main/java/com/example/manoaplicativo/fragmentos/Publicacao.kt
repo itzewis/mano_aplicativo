@@ -19,4 +19,6 @@ class Publicacao : Fragment() {
         return inflater.inflate(R.layout.fragment_publicacao, container, false)
     }
 
+
+
 }
