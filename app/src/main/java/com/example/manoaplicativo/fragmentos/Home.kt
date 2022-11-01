@@ -1,23 +1,17 @@
 package com.example.manoaplicativo.fragmentos
 
-import android.graphics.Insets.add
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.graphics.Insets.add
-import androidx.core.view.OneShotPreDrawListener.add
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.Pulicacao
 import com.example.manoaplicativo.adapter.list_Adapter
 import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
-import com.google.android.gms.common.util.WorkSourceUtil.add
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 
@@ -61,12 +55,10 @@ class Home : Fragment() {
         recyclerView.visibility = View.GONE
 
 
-
         dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes")
 
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                try {
 
                     if (snapshot.exists()) {
                         for (publiSnap in snapshot.children) {
@@ -78,14 +70,11 @@ class Home : Fragment() {
 
                         recyclerView.visibility = View.VISIBLE
 
-                    }
-
-                } catch (ex: Exception) {
-                }
+            }
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Toast.makeText(context, "Algo deu errado", Toast.LENGTH_SHORT).show()
             }
 
         })

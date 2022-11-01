@@ -1,5 +1,6 @@
 package com.example.manoaplicativo.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
+import com.example.manoaplicativo.fragmentos.Home
+import com.google.firebase.auth.FirebaseAuth
 import java.net.URL
 
 
@@ -22,6 +25,7 @@ class list_Adapter(private val list_publicacao: ArrayList<Pulicacao>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val itemAtual = list_publicacao[position]
+
 
         holder.descricao.text = itemAtual.descricao
         holder.titulo.text = itemAtual.titulo

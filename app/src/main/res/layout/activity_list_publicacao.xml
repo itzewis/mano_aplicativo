@@ -7,12 +7,12 @@
     android:layout_height="wrap_content"
     app:cardElevation="2dp"
     app:cardCornerRadius="8dp"
-    android:layout_margin="16dp"
+    android:layout_margin="10dp"
     tools:context=".list_publicacao">
 
 
 <LinearLayout
-    android:layout_margin="8dp"
+    android:layout_margin="10dp"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -46,9 +46,9 @@
 
             <TextView
                 android:id="@+id/valor"
-                android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
                 android:text="R$ 100"
@@ -104,8 +104,7 @@
     </LinearLayout>
 
 
+
 </LinearLayout>
-
-
 
 </androidx.cardview.widget.CardView>
