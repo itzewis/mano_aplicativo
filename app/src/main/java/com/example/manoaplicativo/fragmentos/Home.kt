@@ -1,5 +1,6 @@
 package com.example.manoaplicativo.fragmentos
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -47,6 +48,8 @@ class Home : Fragment() {
 
         pegarDados()
 
+
+
         return fragmento
     }
 
@@ -74,7 +77,7 @@ class Home : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Algo deu errado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Ops, algo deu errado", Toast.LENGTH_SHORT).show()
             }
 
         })
