@@ -128,7 +128,22 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/areaPublicacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="1dp"
+                tools:listitem="@layout/activity_list_publicacao_perfil">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
         </FrameLayout>
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

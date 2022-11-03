@@ -81,7 +81,7 @@ class Criar_Publicacao : Fragment() {
         if(pubId != null) {
             dbRef.child(pubId).setValue(publicacoes)
                 .addOnCompleteListener {
-                    Toast.makeText(context, "Sucesso!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Publicação Criada", Toast.LENGTH_SHORT).show()
                 }
 
         }

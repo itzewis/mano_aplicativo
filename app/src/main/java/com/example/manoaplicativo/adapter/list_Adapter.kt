@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
@@ -20,6 +21,7 @@ class list_Adapter(private val list_publicacao: ArrayList<Pulicacao>) :
     RecyclerView.Adapter<list_Adapter.MyViewHolder>(){
 
     private lateinit var clique : onItemClickListener
+    private lateinit var progressBar: ProgressBar
 
     interface onItemClickListener{
         fun itemClick(position: Int)
@@ -62,6 +64,7 @@ class list_Adapter(private val list_publicacao: ArrayList<Pulicacao>) :
         val descricao : TextView = itemView.findViewById(R.id.descricao)
         val imgUsuario : ImageView = itemView.findViewById(R.id.uFoto)
         val valor : TextView = itemView.findViewById(R.id.valor)
+
 
 
         init {

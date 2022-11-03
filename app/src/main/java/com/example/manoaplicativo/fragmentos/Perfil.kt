@@ -1,6 +1,7 @@
 package com.example.manoaplicativo.fragmentos
 
 import android.content.Intent
+import android.icu.number.NumberFormatter.with
 import android.os.Bundle
 import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,12 +34,13 @@ import de.hdodenhof.circleimageview.CircleImageView
 class Perfil : Fragment() {
 
     private lateinit var btnEditarPerfil: Button
-    private lateinit var foto : CircleImageView
+    private lateinit var bntfoto : ImageView
     private lateinit var storageReference: StorageReference
     private lateinit var storage: FirebaseStorage
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
     private lateinit var edtNome : TextView
+    private lateinit var btnPostagens : Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +50,10 @@ class Perfil : Fragment() {
         val fragmento = inflater.inflate(R.layout.fragment_perfil, container, false)
 
         btnEditarPerfil = fragmento.findViewById(R.id.btnEditarPerfil)
-        foto = fragmento.findViewById(R.id.userfoto)
+        bntfoto = fragmento.findViewById(R.id.userfoto)
         edtNome = fragmento.findViewById(R.id.userNome)
+        btnPostagens = fragmento.findViewById(R.id.publicacoes)
+
 
         btnEditarPerfil.setOnClickListener {
 
@@ -56,6 +61,16 @@ class Perfil : Fragment() {
             startActivity(intent)
 
         }
+
+
+        btnPostagens.setOnClickListener {
+
+            val intent = Intent(context,perfil_Publicacao::class.java)
+            startActivity(intent)
+
+        }
+
+
 
         mostrarDados()
 
@@ -74,7 +89,7 @@ class Perfil : Fragment() {
                         val usuario = datasnapshot.getValue(Usuario::class.java)!!
 
                         //imagem nao esta funcionado
-                        Picasso.get().load(usuario.imgUrl).into(foto)
+                        //Picasso.get().load(usuario.imgUrl).into(bntfoto)
                         edtNome.text = usuario?.nome
 
                     }
@@ -85,6 +100,9 @@ class Perfil : Fragment() {
                 })
 
     }
+
+
+
 
 
 }

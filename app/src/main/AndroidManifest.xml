@@ -20,6 +20,13 @@
         android:theme="@style/Theme.Manoaplicativo"
         tools:targetApi="31">
         <activity
+            android:name=".listPublicacao_Perfil"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".EditarPerfil"
             android:exported="false">
             <meta-data
