@@ -147,7 +147,10 @@ class Cadastro : AppCompatActivity() {
 
     //salva a imagem no storage firebase
     private fun salvarImagem() {
-        val referencia = storage.reference.child("imagem").child(Date().time.toString())
+
+        val uId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        val referencia = storage.reference.child("imagens").child(uId)
         referencia.putFile(imgUrl).addOnCompleteListener{
             if(it.isSuccessful){
                 referencia.downloadUrl.addOnSuccessListener { task ->
@@ -182,7 +185,7 @@ class Cadastro : AppCompatActivity() {
 
                     Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
 
-                    val intent = Intent(this,bemVindo::class.java)
+                    val intent = Intent(this,login::class.java)
                     startActivity(intent)
                     finish()
                 }

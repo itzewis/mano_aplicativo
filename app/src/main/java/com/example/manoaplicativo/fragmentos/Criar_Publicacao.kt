@@ -61,8 +61,6 @@ class Criar_Publicacao : Fragment() {
             }
             else{
                 salvarDados()
-                val intent = Intent(context,Home::class.java)
-                startActivity(intent)
             }
         }
 

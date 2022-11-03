@@ -6,13 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.Pulicacao
+import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.adapter.list_Adapter
 import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
+import com.example.manoaplicativo.list_publicacao
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 
@@ -31,6 +34,7 @@ class Home : Fragment() {
     lateinit var valor : ArrayList<String>
     lateinit var descricao : ArrayList<String>
     lateinit var titulo : ArrayList<String>
+    lateinit var nome : TextView
 
 
     override fun onCreateView(
@@ -43,6 +47,8 @@ class Home : Fragment() {
         recyclerView = fragmento.findViewById(R.id.areaPublicacao)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
+
+
 
         lista_publicacao = arrayListOf<Pulicacao>()
 
@@ -65,11 +71,28 @@ class Home : Fragment() {
 
                     if (snapshot.exists()) {
                         for (publiSnap in snapshot.children) {
+
                             val dados = publiSnap.getValue(Pulicacao::class.java)
                             lista_publicacao.add(dados!!)
                         }
+
+
+
                         val mAdapter = list_Adapter(lista_publicacao)
                         recyclerView.adapter = mAdapter
+
+                        mAdapter.setOnClickListener(object : list_Adapter.onItemClickListener{
+                            override fun itemClick(position: Int) {
+
+                                Toast.makeText(context, "posicao $position", Toast.LENGTH_SHORT).show()
+
+                                //para o app
+                                //val intent = Intent(context, Expandir_publicacao::class.java)
+                                //startActivity(intent)
+
+                            }
+                        })
+
 
                         recyclerView.visibility = View.VISIBLE
 

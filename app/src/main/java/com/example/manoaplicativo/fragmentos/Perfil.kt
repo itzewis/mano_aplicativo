@@ -1,21 +1,90 @@
 package com.example.manoaplicativo.fragmentos
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.manoaplicativo.EditarPerfil
 import com.example.manoaplicativo.R
+import com.example.manoaplicativo.adapter.Pulicacao
+import com.example.manoaplicativo.adapter.Usuario
+import com.example.manoaplicativo.adapter.list_Adapter
+import com.example.manoaplicativo.databinding.FragmentPerfilBinding
+import com.example.manoaplicativo.perfil_Avaliacao
+import com.example.manoaplicativo.perfil_Publicacao
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class Perfil : Fragment() {
+
+    private lateinit var btnEditarPerfil: Button
+    private lateinit var foto : CircleImageView
+    private lateinit var storageReference: StorageReference
+    private lateinit var storage: FirebaseStorage
+    private lateinit var database : FirebaseDatabase
+    private lateinit var dbRef : DatabaseReference
+    private lateinit var edtNome : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false)
+        val fragmento = inflater.inflate(R.layout.fragment_perfil, container, false)
+
+        btnEditarPerfil = fragmento.findViewById(R.id.btnEditarPerfil)
+        foto = fragmento.findViewById(R.id.userfoto)
+        edtNome = fragmento.findViewById(R.id.userNome)
+
+        btnEditarPerfil.setOnClickListener {
+
+            val intent = Intent(context,EditarPerfil::class.java)
+            startActivity(intent)
+
+        }
+
+        mostrarDados()
+
+        return fragmento
+    }
+
+
+
+    private fun mostrarDados() {
+
+        FirebaseDatabase.getInstance().reference.child("Usuarios").child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .addValueEventListener(
+                object  : ValueEventListener{
+                    override fun onDataChange(datasnapshot: DataSnapshot) {
+
+                        val usuario = datasnapshot.getValue(Usuario::class.java)!!
+
+                        //imagem nao esta funcionado
+                        Picasso.get().load(usuario.imgUrl).into(foto)
+                        edtNome.text = usuario?.nome
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(context, "erro", Toast.LENGTH_SHORT).show()
+                    }
+                })
 
     }
+
+
 }

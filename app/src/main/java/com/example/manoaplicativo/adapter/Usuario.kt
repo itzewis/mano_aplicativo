@@ -1,5 +1,8 @@
 package com.example.manoaplicativo.adapter
 
+import android.text.Editable
+import com.google.firebase.database.Exclude
+
 data class Usuario(
     val email: String? = null,
     val id : String? = null,
@@ -8,3 +11,6 @@ data class Usuario(
     val senha:String? = null
 
 )
+
+
+
