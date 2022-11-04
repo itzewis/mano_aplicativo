@@ -18,6 +18,7 @@
     <string name="fa_a_login">Faça Login</string>
     <string name="entrar">Entrar</string>
     <string name="n_o_tem_conta">Não tem conta?</string>
-    <string name="cadastre_se">Cadastre-se?</string>
+    <string name="cadastre_se">Cadastre-se</string>
     <string name="fa_a_seu_login">Faça seu login</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

@@ -1,8 +1,8 @@
 package com.example.manoaplicativo
 
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.app.appsearch.SetSchemaRequest.READ_EXTERNAL_STORAGE
+
+import android.location.LocationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,16 +11,18 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.databinding.ActivityCadastroBinding
+import com.google.android.gms.common.api.GoogleApi.Settings
+import com.google.api.Context
+import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import java.util.*
+
 
 class Cadastro : AppCompatActivity() {
 
@@ -31,6 +33,7 @@ class Cadastro : AppCompatActivity() {
     private lateinit var dbRef : DatabaseReference
     private lateinit var imgUrl : Uri
     private var STORAGE_PERMISSION_CODE = 113
+    private var LOCALIZACAO_CODIGO = 2020
 
 
 
@@ -40,6 +43,7 @@ class Cadastro : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+
 
         // a linha abaixo é usada para pegar a
         // instancia do banco de dados
@@ -69,6 +73,8 @@ class Cadastro : AppCompatActivity() {
             val senha = binding.editSenhaC.text.toString()
             val nome = binding.editNomeC.text.toString()
 
+            pegarLocalizacao()
+
             if(senha.isEmpty() || email.isEmpty() || nome.isEmpty()){
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             }
@@ -85,9 +91,7 @@ class Cadastro : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
-                            salvarImagem()
-
-
+                            Toast.makeText(this, "criada", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
                         }
@@ -100,6 +104,57 @@ class Cadastro : AppCompatActivity() {
 
 
 }
+
+    private fun pegarLocalizacao() : Boolean{
+
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ){
+
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),LOCALIZACAO_CODIGO)
+
+        }
+        else{
+
+            localizaoAtual()
+
+        }
+
+        return false
+    }
+
+    private fun localizaoAtual() {
+
+        if(pegarLocalizacao()){
+
+            if(gpsAtivado()){
+
+                Toast.makeText(this, "GPS Ativado", Toast.LENGTH_SHORT).show()
+                salvarImagem()
+
+            }
+            else{
+
+                Toast.makeText(this, "Ative a localização", Toast.LENGTH_SHORT).show()
+                val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+
+            }
+
+
+        }
+
+
+       /* var locationRequest = com.google.android.gms.location.LocationRequest()
+
+        locationRequest.interval = 10000
+
+        locationRequest.fastestInterval = 5000
+
+        locationRequest.priority = com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+*/
+
+
+
+    }
 
     //pedi permissao do usuario para ter acesso a galeria
     private fun pedirPermissao(permission: String, requestCode: Int){
@@ -120,6 +175,8 @@ class Cadastro : AppCompatActivity() {
 
     }
 
+    //verificação do pedirpermissao
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -128,19 +185,35 @@ class Cadastro : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if(requestCode == STORAGE_PERMISSION_CODE){
+            //caso a permissao seja garantida
             if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this, "Acesso permitido", Toast.LENGTH_SHORT).show()
 
-
-                //caso o acesso seja permitido vai da acesso a galeria
+                //com o acesso permitido ira dar acesso a galeria para a escolha de uma imagem
                 val intent = Intent()
                 intent.action = Intent.ACTION_GET_CONTENT
                 intent.type = "image/*"
                 startActivityForResult(intent,1)
 
             }else{
+                //caso seja negado
                 Toast.makeText(this, "Acesso negado", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        if (requestCode == LOCALIZACAO_CODIGO){
+
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                Toast.makeText(this, "Acesso permitido", Toast.LENGTH_SHORT).show()
+                localizaoAtual()
+
+            }
+
+            else{
+                Toast.makeText(this, "Acesso negado", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
     }
@@ -162,8 +235,6 @@ class Cadastro : AppCompatActivity() {
 
     }
 
-
-
     //os campos presentes na tela cadastro serem adicionados no realtime database
     //logo apos a criacao do createUserWithEmailAndPassword
     private fun adicionarRealTime(imgUrl: String) {
@@ -175,6 +246,7 @@ class Cadastro : AppCompatActivity() {
         val email = binding.editEmailC.text.toString()
         val senha = binding.editSenhaC.text.toString()
         val nome = binding.editNomeC.text.toString()
+
 
 
         val usuario = Usuario(email,uId,imgUrl,nome,senha)
@@ -194,6 +266,14 @@ class Cadastro : AppCompatActivity() {
 
     }
 
+
+    //verifica se o GPS esta ativado
+   private fun gpsAtivado(): Boolean {
+        var locationManager: LocationManager = getSystemService(android.content.Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
 
 
     //para que a imagem escolhida apareca la no campo btnCamera

@@ -16,7 +16,6 @@ class bemVindo : AppCompatActivity() {
         binding.btnContinuarTelaInicial.setOnClickListener {
             val intent = Intent(this,login::class.java)
             startActivity(intent)
-            finish()
         }
 
     }

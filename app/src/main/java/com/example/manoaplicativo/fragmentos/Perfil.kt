@@ -70,8 +70,6 @@ class Perfil : Fragment() {
 
         }
 
-
-
         mostrarDados()
 
         return fragmento

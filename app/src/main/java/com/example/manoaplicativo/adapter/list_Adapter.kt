@@ -48,6 +48,7 @@ class list_Adapter(private val list_publicacao: ArrayList<Pulicacao>) :
         holder.valor.text = itemAtual.valor
         holder.nomeUsuario.text = itemAtual.uId
 
+
     }
 
     override fun getItemCount(): Int {

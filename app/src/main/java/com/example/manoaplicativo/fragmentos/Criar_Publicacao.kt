@@ -1,6 +1,5 @@
 package com.example.manoaplicativo.fragmentos
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +10,6 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.Pulicacao
-import com.example.manoaplicativo.adapter.Usuario
-import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -70,13 +67,13 @@ class Criar_Publicacao : Fragment() {
 
     private fun salvarDados() {
         val pubId = dbRef.push().key
-        val uId = FirebaseAuth.getInstance().currentUser!!.uid
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
         val titulo = titulo.text.toString()
         val descricao = descricao.text.toString()
         val valor = valor.text.toString()
 
 
-        val publicacoes = Pulicacao(descricao,pubId,titulo,uId,valor)
+        val publicacoes = Pulicacao(descricao,pubId,titulo,uid,valor)
 
         if(pubId != null) {
             dbRef.child(pubId).setValue(publicacoes)
