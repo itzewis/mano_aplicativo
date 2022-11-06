@@ -70,7 +70,7 @@ class Criar_Publicacao : Fragment() {
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
         val titulo = titulo.text.toString()
         val descricao = descricao.text.toString()
-        val valor = valor.text.toString()
+        var valor = valor.text.toString()
 
 
         val publicacoes = Pulicacao(descricao,pubId,titulo,uid,valor)
@@ -78,7 +78,9 @@ class Criar_Publicacao : Fragment() {
         if(pubId != null) {
             dbRef.child(pubId).setValue(publicacoes)
                 .addOnCompleteListener {
+
                     Toast.makeText(context, "Publicação Criada", Toast.LENGTH_SHORT).show()
+
                 }
 
         }

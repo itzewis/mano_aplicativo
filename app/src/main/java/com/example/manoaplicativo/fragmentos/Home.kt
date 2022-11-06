@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.example.manoaplicativo.adapter.Pulicacao
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.adapter.list_Adapter
 import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
+import com.example.manoaplicativo.expandir_publicacao
 import com.example.manoaplicativo.list_publicacao
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -35,7 +37,7 @@ class Home : Fragment() {
     lateinit var descricao : ArrayList<String>
     lateinit var titulo : ArrayList<String>
     lateinit var nome : TextView
-
+    lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +50,7 @@ class Home : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
+        progressBar = fragmento.findViewById(R.id.carregando)
 
 
         lista_publicacao = arrayListOf<Pulicacao>()
@@ -74,9 +77,8 @@ class Home : Fragment() {
 
                             val dados = publiSnap.getValue(Pulicacao::class.java)
                             lista_publicacao.add(dados!!)
+                            mostrarProgress()
                         }
-
-
 
                         val mAdapter = list_Adapter(lista_publicacao)
                         recyclerView.adapter = mAdapter
@@ -84,17 +86,17 @@ class Home : Fragment() {
                         mAdapter.setOnClickListener(object : list_Adapter.onItemClickListener{
                             override fun itemClick(position: Int) {
 
-                                Toast.makeText(context, "posicao $position", Toast.LENGTH_SHORT).show()
-
-                                //para o app
-                                //val intent = Intent(context, Expandir_publicacao::class.java)
-                                //startActivity(intent)
+                                //para expandir e ve a publicaco completa e poder
+                                //entrar em contato o a pessoa que oferta o serviço
+                                val intent = Intent(context, expandir_publicacao::class.java)
+                                startActivity(intent)
 
                             }
                         })
 
 
                         recyclerView.visibility = View.VISIBLE
+                        esconderProgress()
 
             }
             }
@@ -104,6 +106,20 @@ class Home : Fragment() {
             }
 
         })
+
+    }
+
+
+    //para mostrar o progressbar
+    private fun mostrarProgress(){
+
+        progressBar.visibility = View.VISIBLE
+
+    }
+
+    private fun esconderProgress(){
+
+        progressBar.visibility = View.INVISIBLE
 
     }
 

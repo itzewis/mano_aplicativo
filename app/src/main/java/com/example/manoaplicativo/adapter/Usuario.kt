@@ -10,7 +10,8 @@ data class Usuario(
     //val latitude : Float,
     //val longitude : Float,
     val nome: String? = null,
-    val senha:String? = null
+    val senha:String? = null,
+    var tipoUsuario : String = "Cliente"
 
 )
 

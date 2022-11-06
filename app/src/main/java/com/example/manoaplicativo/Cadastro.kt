@@ -91,7 +91,8 @@ class Cadastro : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
-                            Toast.makeText(this, "criada", Toast.LENGTH_SHORT).show()
+
+
                         } else {
                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
                         }
@@ -114,47 +115,13 @@ class Cadastro : AppCompatActivity() {
         }
         else{
 
-            localizaoAtual()
+            salvarImagem()
 
         }
 
         return false
     }
 
-    private fun localizaoAtual() {
-
-        if(pegarLocalizacao()){
-
-            if(gpsAtivado()){
-
-                Toast.makeText(this, "GPS Ativado", Toast.LENGTH_SHORT).show()
-                salvarImagem()
-
-            }
-            else{
-
-                Toast.makeText(this, "Ative a localização", Toast.LENGTH_SHORT).show()
-                val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-
-            }
-
-
-        }
-
-
-       /* var locationRequest = com.google.android.gms.location.LocationRequest()
-
-        locationRequest.interval = 10000
-
-        locationRequest.fastestInterval = 5000
-
-        locationRequest.priority = com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-*/
-
-
-
-    }
 
     //pedi permissao do usuario para ter acesso a galeria
     private fun pedirPermissao(permission: String, requestCode: Int){
@@ -206,7 +173,6 @@ class Cadastro : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
                 Toast.makeText(this, "Acesso permitido", Toast.LENGTH_SHORT).show()
-                localizaoAtual()
 
             }
 

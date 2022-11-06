@@ -24,6 +24,7 @@ import com.example.manoaplicativo.perfil_Avaliacao
 import com.example.manoaplicativo.perfil_Publicacao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -72,30 +73,29 @@ class Perfil : Fragment() {
 
         mostrarDados()
 
+
         return fragmento
     }
 
 
+   private fun mostrarDados() {
 
-    private fun mostrarDados() {
+       var uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        FirebaseDatabase.getInstance().reference.child("Usuarios").child(FirebaseAuth.getInstance().currentUser!!.uid)
-            .addValueEventListener(
-                object  : ValueEventListener{
-                    override fun onDataChange(datasnapshot: DataSnapshot) {
+       dbRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uId)
 
-                        val usuario = datasnapshot.getValue(Usuario::class.java)!!
+       dbRef.addValueEventListener(object : ValueEventListener{
+           override fun onDataChange(snapshot: DataSnapshot) {
 
-                        //imagem nao esta funcionado
-                        //Picasso.get().load(usuario.imgUrl).into(bntfoto)
-                        edtNome.text = usuario?.nome
 
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(context, "erro", Toast.LENGTH_SHORT).show()
-                    }
-                })
+           }
+
+           override fun onCancelled(error: DatabaseError) {
+               Toast.makeText(context, "Algo deu errado", Toast.LENGTH_SHORT).show()
+           }
+
+       })
 
     }
 
