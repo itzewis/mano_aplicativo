@@ -6,6 +6,7 @@ import android.icu.number.NumberFormatter.with
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -54,9 +55,6 @@ class list_Adapter(val list_publicacao: ArrayList<Pulicacao>) :
         holder.valor.text = itemAtual.valor
         holder.nomeUsuario.text = itemAtual.uId
 
-
-
-       // Glide.with(context).load(itemAtual.imgUrl)
 
     }
 

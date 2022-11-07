@@ -3,6 +3,7 @@ package com.example.manoaplicativo
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.manoaplicativo.fragmentos.Perfil
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
@@ -29,6 +31,7 @@ class EditarPerfil : AppCompatActivity() {
     private lateinit var storage : StorageReference
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
+    private lateinit var imgUrl : Uri
 
 
     private lateinit var usuario : Usuario
@@ -42,7 +45,7 @@ class EditarPerfil : AppCompatActivity() {
         dbRef = FirebaseDatabase.getInstance().getReference()
 
         var btnVoltar = findViewById<ImageView>(R.id.btnVoltar)
-        var btnFoto = findViewById<CircleImageView>(R.id.btnFoto)
+        var btnFoto = findViewById<ImageView>(R.id.btnFoto)
         var salvarAlteracoes = findViewById<Button>(R.id.salvarAlteracoes)
         var nome = findViewById<TextView>(R.id.nome)
         var email = findViewById<TextView>(R.id.email)
@@ -70,5 +73,17 @@ class EditarPerfil : AppCompatActivity() {
     }
 
 
+    //para que a imagem escolhida apareca la no campo btnCamera
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if(data != null){
+            if(data.data != null){
+                imgUrl = data.data!!
+                var btnFoto = findViewById<ImageView>(R.id.btnFoto)
+                btnFoto.setImageURI(imgUrl)
+            }
+        }
+
+    }
 }

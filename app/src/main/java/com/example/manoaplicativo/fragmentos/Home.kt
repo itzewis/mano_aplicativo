@@ -18,6 +18,7 @@ import com.example.manoaplicativo.adapter.list_Adapter
 import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
 import com.example.manoaplicativo.expandir_publicacao
 import com.example.manoaplicativo.list_publicacao
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 
@@ -29,6 +30,7 @@ class Home : Fragment() {
     private lateinit var storage : FirebaseStorage
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
+
 
     private lateinit var lista_publicacao : ArrayList<Pulicacao>
     private lateinit var recyclerView: RecyclerView
@@ -66,8 +68,9 @@ class Home : Fragment() {
 
         recyclerView.visibility = View.GONE
 
-
         dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes")
+
+        val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -78,18 +81,30 @@ class Home : Fragment() {
                             val dados = publiSnap.getValue(Pulicacao::class.java)
                             lista_publicacao.add(dados!!)
                             mostrarProgress()
+
                         }
 
                         val mAdapter = list_Adapter(lista_publicacao)
                         recyclerView.adapter = mAdapter
 
+                        //clicar sobre um publicacao
                         mAdapter.setOnClickListener(object : list_Adapter.onItemClickListener{
                             override fun itemClick(position: Int) {
+
 
                                 //para expandir e ve a publicaco completa e poder
                                 //entrar em contato o a pessoa que oferta o serviço
                                 val intent = Intent(context, expandir_publicacao::class.java)
+
+                                intent.putExtra("pubId", lista_publicacao[position].pubId)
+                                intent.putExtra("descricao", lista_publicacao[position].descricao)
+                                intent.putExtra("titulo", lista_publicacao[position].titulo)
+                                intent.putExtra("valor", lista_publicacao[position].valor)
+                                intent.putExtra("uId", lista_publicacao[position].uId)
+
+
                                 startActivity(intent)
+
 
                             }
                         })

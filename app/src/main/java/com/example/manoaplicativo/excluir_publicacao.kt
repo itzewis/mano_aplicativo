@@ -1,41 +1,40 @@
 package com.example.manoaplicativo
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.example.manoaplicativo.adapter.Pulicacao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
-class expandir_publicacao : AppCompatActivity() {
+class excluir_publicacao : AppCompatActivity() {
+
+    private lateinit var btnExcluirPubli : Button
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_expandir_publicacao)
-
-        val btnInteresse = findViewById<Button>(R.id.btnInteresse)
-
-        btnInteresse.setOnClickListener {
-
-            Toast.makeText(this, "Uma solicitação foi enviada", Toast.LENGTH_SHORT).show()
-            enviarSolicitacao()
-
-        }
+        setContentView(R.layout.activity_excluir_publicacao)
 
         setValues()
 
+       btnExcluirPubli = findViewById(R.id.btnExcluirPubli)
+
+
+        btnExcluirPubli.setOnClickListener {
+
+            excluirPublicacao()
+
+        }
+
     }
 
+    private fun excluirPublicacao() {
 
-    //para enviar uma solicitacao para a pessoa que fez a publicaco
-    //
-    private fun enviarSolicitacao() {
-
-        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-
-        var database = FirebaseDatabase.getInstance().getReference("Solicitacao")
-
-
+    //deletar publicacoa
 
     }
 
@@ -54,5 +53,6 @@ class expandir_publicacao : AppCompatActivity() {
         descricao.text = intent.getStringExtra("descricao")
 
     }
+
 
 }

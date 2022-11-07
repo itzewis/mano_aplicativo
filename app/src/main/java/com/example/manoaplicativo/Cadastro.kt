@@ -55,7 +55,7 @@ class Cadastro : AppCompatActivity() {
         database = FirebaseDatabase.getInstance();
 
         // linha abaixo é  usada para pegar  a referencia do banco de dados firebase.
-        dbRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        dbRef = FirebaseDatabase.getInstance().getReference("Usuarios")
 
         storage = FirebaseStorage.getInstance()
 
