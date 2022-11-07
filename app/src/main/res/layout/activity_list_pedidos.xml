@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="10dp"
+    tools:context=".list_pedidos">
+
+    <TextView
+        android:id="@+id/qNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/email"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnAceitar"
+        android:layout_gravity="left"
+        style="@style/botao"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="45dp"
+        android:text="Aceitar"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnRecusar"
+        android:layout_gravity="right"
+        android:layout_marginTop="50dp"
+        android:text="Recusar"
+        style="@style/botao"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_marginEnd="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</androidx.cardview.widget.CardView>

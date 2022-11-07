@@ -59,7 +59,7 @@
 
     <TextView
         android:id="@+id/titulo"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:textSize="14sp"
@@ -93,6 +93,8 @@
         android:layout_marginStart="76dp"
         android:layout_marginTop="48dp"
         android:text="Chat"
+        android:textColor="@color/white"
+        style="@style/botao"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/valor" />
@@ -104,6 +106,8 @@
         android:layout_marginStart="236dp"
         android:layout_marginTop="48dp"
         android:text="Avaliação"
+        style="@style/botao"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/valor" />

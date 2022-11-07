@@ -87,7 +87,7 @@ class Perfil : Fragment() {
        dbRef.addValueEventListener(object : ValueEventListener{
            override fun onDataChange(snapshot: DataSnapshot) {
 
-
+               
 
            }
 

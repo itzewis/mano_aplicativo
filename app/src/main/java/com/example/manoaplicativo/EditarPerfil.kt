@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.databinding.ActivityEditarPerfilBinding
@@ -28,8 +29,7 @@ class EditarPerfil : AppCompatActivity() {
     private lateinit var storage : StorageReference
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
-    private lateinit var nome : EditText
-    private lateinit var email : EditText
+
 
     private lateinit var usuario : Usuario
 
@@ -44,8 +44,8 @@ class EditarPerfil : AppCompatActivity() {
         var btnVoltar = findViewById<ImageView>(R.id.btnVoltar)
         var btnFoto = findViewById<CircleImageView>(R.id.btnFoto)
         var salvarAlteracoes = findViewById<Button>(R.id.salvarAlteracoes)
-        nome = findViewById<EditText>(R.id.nome)
-        email = findViewById<EditText>(R.id.email)
+        var nome = findViewById<TextView>(R.id.nome)
+        var email = findViewById<TextView>(R.id.email)
 
 
         btnVoltar.setOnClickListener {
@@ -64,32 +64,11 @@ class EditarPerfil : AppCompatActivity() {
         }
 
         salvarAlteracoes.setOnClickListener {
-            Toast.makeText(this, "fazendo", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Imagem Alterada", Toast.LENGTH_SHORT).show()
         }
 
     }
 
-
-    private fun mostrarDados() {
-
-        FirebaseDatabase.getInstance().reference.child("Usuarios").child(FirebaseAuth.getInstance().currentUser!!.uid)
-            .addValueEventListener(
-                object  : ValueEventListener{
-                    override fun onDataChange(datasnapshot: DataSnapshot) {
-
-                        val usuario = datasnapshot.getValue(Usuario::class.java)!!
-
-                        //Picasso.get().load(usuario.imgUrl).into(foto)
-                        //nome.text = usuario?.nome precisa ser editable aparentemnete
-
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(this@EditarPerfil, "erro", Toast.LENGTH_SHORT).show()
-                    }
-                })
-
-    }
 
 
 }

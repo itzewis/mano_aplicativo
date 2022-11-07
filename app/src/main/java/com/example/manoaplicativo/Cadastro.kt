@@ -2,6 +2,7 @@ package com.example.manoaplicativo
 
 
 
+import android.annotation.SuppressLint
 import android.location.LocationManager
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -35,6 +36,8 @@ class Cadastro : AppCompatActivity() {
     private var STORAGE_PERMISSION_CODE = 113
     private var LOCALIZACAO_CODIGO = 2020
 
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,8 @@ class Cadastro : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+
+       fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         // a linha abaixo é usada para pegar a
         // instancia do banco de dados
@@ -73,14 +78,14 @@ class Cadastro : AppCompatActivity() {
             val senha = binding.editSenhaC.text.toString()
             val nome = binding.editNomeC.text.toString()
 
-            pegarLocalizacao()
+
 
             if(senha.isEmpty() || email.isEmpty() || nome.isEmpty()){
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             }
 
             if(senha.length < 6){
-                binding.editSenhaC.setError("Minímo 6 caracteres")
+                binding.editSenhaC.error = "Minímo 6 caracteres"
             }
 
             // se todas a condições acima forem verdadeiras
@@ -90,9 +95,9 @@ class Cadastro : AppCompatActivity() {
             else{
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) {
-                        if (it.isSuccessful) {
+                        if(it.isSuccessful) {
 
-
+                            checkPermissions()
                         } else {
                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
                         }
@@ -106,7 +111,7 @@ class Cadastro : AppCompatActivity() {
 
 }
 
-    private fun pegarLocalizacao() : Boolean{
+    private fun checkPermissions() : Boolean{
 
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ){
 
@@ -116,10 +121,36 @@ class Cadastro : AppCompatActivity() {
         else{
 
             salvarImagem()
+            pegarLL()
 
         }
 
         return false
+    }
+
+
+    //pegar a latitude e a longitude se o GPS estiver ativo
+    @SuppressLint("MissingPermission")
+    private fun pegarLL() {
+
+        fusedLocationProviderClient.lastLocation?.addOnSuccessListener {
+
+            if(it == null){
+
+                Toast.makeText(this, "sem localizacao", Toast.LENGTH_SHORT).show()
+
+            }
+            else it.apply {
+
+                val latitude = it?.latitude
+                val longitude = it?.longitude
+
+                Toast.makeText(this@Cadastro, "lat $latitude, lon $longitude", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+
     }
 
 
@@ -173,6 +204,8 @@ class Cadastro : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
                 Toast.makeText(this, "Acesso permitido", Toast.LENGTH_SHORT).show()
+
+                pegarLL()
 
             }
 
@@ -232,14 +265,6 @@ class Cadastro : AppCompatActivity() {
 
     }
 
-
-    //verifica se o GPS esta ativado
-   private fun gpsAtivado(): Boolean {
-        var locationManager: LocationManager = getSystemService(android.content.Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
 
 
     //para que a imagem escolhida apareca la no campo btnCamera
