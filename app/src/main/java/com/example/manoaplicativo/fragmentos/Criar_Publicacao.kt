@@ -34,8 +34,8 @@ class Criar_Publicacao : Fragment() {
         // Inflate the layout for this fragment
         var fragmento = inflater.inflate(R.layout.fragment_criar__publicacao, container, false)
 
-
-        database = FirebaseDatabase.getInstance();
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        dbRef =  FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
 
         // linha abaixo é  usada para pegar  a referencia do banco de dados firebase.
         dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes/");
@@ -48,9 +48,9 @@ class Criar_Publicacao : Fragment() {
         
         criarPublicacao.setOnClickListener {
 
-            var titulo = titulo.text.toString()
-            var descricao = descricao.text.toString()
-            var valor = valor.text.toString()
+            val titulo = titulo.text.toString()
+            val descricao = descricao.text.toString()
+            val valor = valor.text.toString()
 
             if(titulo.isEmpty() || valor.isEmpty() || descricao.isEmpty()){
                 Toast.makeText(context, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
@@ -67,13 +67,17 @@ class Criar_Publicacao : Fragment() {
 
     private fun salvarDados() {
         val pubId = dbRef.push().key
+
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val nome =  FirebaseDatabase.getInstance().getReference("$uid")
+
+
         val titulo = titulo.text.toString()
         val descricao = descricao.text.toString()
-        var valor = valor.text.toString()
+        val valor = valor.text.toString()
 
 
-        val publicacoes = Pulicacao(descricao,pubId,titulo,uid,valor)
+        val publicacoes = Pulicacao(descricao,pubId,titulo, nome.toString(),valor)
 
         if(pubId != null) {
             dbRef.child(pubId).setValue(publicacoes)

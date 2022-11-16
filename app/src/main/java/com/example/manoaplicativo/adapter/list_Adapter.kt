@@ -53,7 +53,7 @@ class list_Adapter(val list_publicacao: ArrayList<Pulicacao>) :
         holder.descricao.text = itemAtual.descricao
         holder.titulo.text = itemAtual.titulo
         holder.valor.text = itemAtual.valor
-        holder.nomeUsuario.text = itemAtual.uId
+        holder.nomeUsuario.text = itemAtual.nomeUsuario
 
 
     }

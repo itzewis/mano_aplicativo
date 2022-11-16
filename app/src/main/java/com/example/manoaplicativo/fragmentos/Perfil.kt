@@ -53,6 +53,7 @@ class Perfil : Fragment() {
         btnEditarPerfil = fragmento.findViewById(R.id.btnEditarPerfil)
         bntfoto = fragmento.findViewById(R.id.userfoto)
         edtNome = fragmento.findViewById(R.id.userNome)
+        var btnConfi = fragmento.findViewById<ImageView>(R.id.btnConfig)
 
 
         recyclerView = fragmento.findViewById(R.id.areaPublicacao)
@@ -64,12 +65,22 @@ class Perfil : Fragment() {
         lista_publicacao = arrayListOf<Pulicacao>()
 
 
+        btnConfi.setOnClickListener {
+
+            var intent = Intent(context, configuracao::class.java)
+            startActivity(intent)
+
+        }
+
+
         btnEditarPerfil.setOnClickListener {
 
             val intent = Intent(context,EditarPerfil::class.java)
             startActivity(intent)
 
         }
+
+
 
 
         mostrarDados()
@@ -119,7 +130,7 @@ class Perfil : Fragment() {
 
                         val dados = publiSnap.getValue(Pulicacao::class.java)
                         if (dados != null) {
-                            if(uId == dados.uId)
+                            if(uId == dados.nomeUsuario)
 
                                 lista_publicacao.add(dados!!)
 
@@ -144,7 +155,7 @@ class Perfil : Fragment() {
                             intent.putExtra("descricao", lista_publicacao[position].descricao)
                             intent.putExtra("titulo", lista_publicacao[position].titulo)
                             intent.putExtra("valor", lista_publicacao[position].valor)
-                            intent.putExtra("uId", lista_publicacao[position].uId)
+                            intent.putExtra("uId", lista_publicacao[position].nomeUsuario)
 
 
                             startActivity(intent)

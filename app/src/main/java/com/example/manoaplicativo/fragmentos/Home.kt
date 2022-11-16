@@ -100,7 +100,7 @@ class Home : Fragment() {
                                 intent.putExtra("descricao", lista_publicacao[position].descricao)
                                 intent.putExtra("titulo", lista_publicacao[position].titulo)
                                 intent.putExtra("valor", lista_publicacao[position].valor)
-                                intent.putExtra("uId", lista_publicacao[position].uId)
+                                intent.putExtra("uId", lista_publicacao[position].nomeUsuario)
 
 
                                 startActivity(intent)
@@ -140,4 +140,5 @@ class Home : Fragment() {
 
 
 }
+
 
