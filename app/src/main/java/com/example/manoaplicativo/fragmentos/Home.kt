@@ -2,23 +2,23 @@ package com.example.manoaplicativo.fragmentos
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.Pulicacao
-import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.adapter.list_Adapter
 import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
 import com.example.manoaplicativo.expandir_publicacao
-import com.example.manoaplicativo.list_publicacao
+import com.example.manoaplicativo.login
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 
@@ -41,6 +41,8 @@ class Home : Fragment() {
     lateinit var nome : TextView
     lateinit var progressBar: ProgressBar
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,18 +50,31 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         val fragmento =  inflater.inflate(R.layout.fragment_home, container, false)
 
+
+        var textOla = fragmento.findViewById<TextView>(R.id.textViewOla)
+
+        var user = FirebaseAuth.getInstance()
+
+        if (user.currentUser != null){
+
+            user.currentUser?.let {
+
+                textOla.text = it.email
+
+            }
+
+        }
+
+
         recyclerView = fragmento.findViewById(R.id.areaPublicacao)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
         progressBar = fragmento.findViewById(R.id.carregando)
 
-
         lista_publicacao = arrayListOf<Pulicacao>()
 
         pegarDados()
-
-
 
         return fragmento
     }
@@ -136,6 +151,22 @@ class Home : Fragment() {
 
         progressBar.visibility = View.INVISIBLE
 
+    }
+
+
+    var authStateListener =
+        AuthStateListener { firebaseAuth ->
+            val firebaseUser = firebaseAuth.currentUser
+            if (firebaseUser == null) {
+                val intent = Intent(context, login::class.java)
+                startActivity(intent)
+            }
+        }
+
+    val firebaseAuth = FirebaseAuth.getInstance()
+    override fun onStop() {
+        super.onStop()
+        firebaseAuth.removeAuthStateListener(authStateListener)
     }
 
 

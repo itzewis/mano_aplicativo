@@ -12,7 +12,9 @@
         android:layout_height="30dp"
         android:layout_marginTop="108dp"
         android:paddingStart="16dp"
-        android:text="Excluir Conta"
+        android:drawableStart="@drawable/ic_deletar"
+        android:drawablePadding="20dp"
+        android:text="@string/excluir_conta"
         android:textSize="17sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,15 +26,18 @@
         android:id="@+id/btnSair"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginBottom="528dp"
+        android:layout_marginBottom="544dp"
         android:paddingStart="16dp"
-        android:text="Sair"
+        android:text="@string/sair"
+        android:drawablePadding="20dp"
+        android:paddingTop="2dp"
         android:textColor="@color/black"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:drawableStartCompat="@drawable/ic_sair" />
 
     <TextView
         android:id="@+id/textView11"

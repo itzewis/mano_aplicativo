@@ -1,17 +1,23 @@
 package com.example.manoaplicativo
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+
+
 
 class login : AppCompatActivity() {
     private lateinit var editEmail: EditText
@@ -29,6 +35,8 @@ class login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         supportActionBar?.hide()
+
+
 
         auth = FirebaseAuth.getInstance()
 
@@ -71,7 +79,10 @@ class login : AppCompatActivity() {
     }
 
 
+
     private fun entrar(email: String, senha: String){
+
+
         auth.signInWithEmailAndPassword(email, senha)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -87,20 +98,22 @@ class login : AppCompatActivity() {
     }
 
 
-   /* private fun pedirPermissao(permission: String, requestCode: Int){
 
-        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED){
-
-            Toast.makeText(this, "permitido", Toast.LENGTH_SHORT).show()
-
+    var authStateListener =
+        AuthStateListener { firebaseAuth ->
+            val firebaseUser = firebaseAuth.currentUser
+            if (firebaseUser != null) {
+                val intent = Intent(this@login, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
-        else{
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),100)
-            Toast.makeText(this, "negado", Toast.LENGTH_SHORT).show()
-        }
+    val firebaseAuth = FirebaseAuth.getInstance()
+    override fun onStart() {
+        super.onStart()
+        firebaseAuth.addAuthStateListener(authStateListener)
+    }
 
-    }*/
 
 }

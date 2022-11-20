@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.databinding.ActivityCadastroBinding
+import com.example.manoaplicativo.fragmentos.Home
 import com.google.android.gms.common.api.GoogleApi.Settings
 import com.google.api.Context
 import com.google.android.gms.location.*
@@ -34,9 +35,9 @@ class Cadastro : AppCompatActivity() {
     private lateinit var dbRef : DatabaseReference
     private lateinit var imgUrl : Uri
     private var STORAGE_PERMISSION_CODE = 113
-    private var LOCALIZACAO_CODIGO = 2020
+    //private var LOCALIZACAO_CODIGO = 2020
 
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    //lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
 
 
@@ -48,7 +49,7 @@ class Cadastro : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
 
-       fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+      // fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         // a linha abaixo é usada para pegar a
         // instancia do banco de dados
@@ -97,7 +98,8 @@ class Cadastro : AppCompatActivity() {
                     .addOnCompleteListener(this) {
                         if(it.isSuccessful) {
 
-                            checkPermissions()
+                            //checkPermissions()
+
                         } else {
                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
                         }
@@ -111,47 +113,6 @@ class Cadastro : AppCompatActivity() {
 
 }
 
-    private fun checkPermissions() : Boolean{
-
-        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ){
-
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),LOCALIZACAO_CODIGO)
-
-        }
-        else{
-
-            salvarImagem()
-            pegarLL()
-
-        }
-
-        return false
-    }
-
-
-    //pegar a latitude e a longitude se o GPS estiver ativo
-    @SuppressLint("MissingPermission")
-    private fun pegarLL() {
-
-        fusedLocationProviderClient.lastLocation?.addOnSuccessListener {
-
-            if(it == null){
-
-                Toast.makeText(this, "sem localizacao", Toast.LENGTH_SHORT).show()
-
-            }
-            else it.apply {
-
-                val latitude = it?.latitude
-                val longitude = it?.longitude
-
-                Toast.makeText(this@Cadastro, "lat $latitude, lon $longitude", Toast.LENGTH_SHORT).show()
-
-            }
-
-        }
-
-    }
 
 
     //pedi permissao do usuario para ter acesso a galeria
@@ -193,27 +154,15 @@ class Cadastro : AppCompatActivity() {
                 intent.type = "image/*"
                 startActivityForResult(intent,1)
 
+                salvarImagem()
+
             }else{
                 //caso seja negado
                 Toast.makeText(this, "Acesso negado", Toast.LENGTH_SHORT).show()
             }
         }
 
-        if (requestCode == LOCALIZACAO_CODIGO){
 
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-                Toast.makeText(this, "Acesso permitido", Toast.LENGTH_SHORT).show()
-
-                pegarLL()
-
-            }
-
-            else{
-                Toast.makeText(this, "Acesso negado", Toast.LENGTH_SHORT).show()
-            }
-
-        }
 
     }
 
