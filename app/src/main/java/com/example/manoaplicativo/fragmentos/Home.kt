@@ -1,5 +1,6 @@
 package com.example.manoaplicativo.fragmentos
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.Pulicacao
+import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.adapter.list_Adapter
 import com.example.manoaplicativo.databinding.FragmentCriarPublicacaoBinding
 import com.example.manoaplicativo.expandir_publicacao
@@ -33,6 +35,7 @@ class Home : Fragment() {
 
 
     private lateinit var lista_publicacao : ArrayList<Pulicacao>
+    private lateinit var list : ArrayList<Usuario>
     private lateinit var recyclerView: RecyclerView
 
     lateinit var valor : ArrayList<String>
@@ -43,6 +46,7 @@ class Home : Fragment() {
 
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,21 +54,7 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         val fragmento =  inflater.inflate(R.layout.fragment_home, container, false)
 
-
-        var textOla = fragmento.findViewById<TextView>(R.id.textViewOla)
-
-        var user = FirebaseAuth.getInstance()
-
-        if (user.currentUser != null){
-
-            user.currentUser?.let {
-
-                textOla.text = it.email
-
-            }
-
-        }
-
+        nome = fragmento.findViewById(R.id.textViewnome)
 
         recyclerView = fragmento.findViewById(R.id.areaPublicacao)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -73,11 +63,16 @@ class Home : Fragment() {
         progressBar = fragmento.findViewById(R.id.carregando)
 
         lista_publicacao = arrayListOf<Pulicacao>()
+        list = arrayListOf<Usuario>()
+
 
         pegarDados()
+        mostrarNome()
 
         return fragmento
     }
+
+
 
     private fun pegarDados() {
 
@@ -154,19 +149,28 @@ class Home : Fragment() {
     }
 
 
-    var authStateListener =
-        AuthStateListener { firebaseAuth ->
-            val firebaseUser = firebaseAuth.currentUser
-            if (firebaseUser == null) {
-                val intent = Intent(context, login::class.java)
-                startActivity(intent)
-            }
-        }
+    private fun mostrarNome(){
 
-    val firebaseAuth = FirebaseAuth.getInstance()
-    override fun onStop() {
-        super.onStop()
-        firebaseAuth.removeAuthStateListener(authStateListener)
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val userRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+
+        userRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val user = snapshot.getValue<Usuario>(Usuario::class.java)!!
+
+                nome.text = user.nome
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                nome.setError("Algo deu errado")
+            }
+
+
+        })
+
+
     }
 
 

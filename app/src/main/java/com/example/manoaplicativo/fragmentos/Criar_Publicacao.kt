@@ -1,6 +1,5 @@
 package com.example.manoaplicativo.fragmentos
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +11,8 @@ import android.widget.Toast
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.Pulicacao
 import com.example.manoaplicativo.adapter.Usuario
-import com.example.manoaplicativo.expandir_publicacao
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -39,6 +36,7 @@ class Criar_Publicacao : Fragment() {
 
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
         dbRef =  FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+
 
         // linha abaixo é  usada para pegar  a referencia do banco de dados firebase.
         dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes/");
@@ -69,24 +67,43 @@ class Criar_Publicacao : Fragment() {
     }
 
     private fun salvarDados() {
-        val pubId = dbRef.push().key
+
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val titulo = titulo.text.toString()
-        val descricao = descricao.text.toString()
-        val valor = valor.text.toString()
+        val userRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val user = snapshot.getValue<Usuario>(Usuario::class.java)!!
+                val pubId = dbRef.push().key
+                val nome = user.nome.toString()
+                val titulo = titulo.text.toString()
+                val descricao = descricao.text.toString()
+                val valor = valor.text.toString()
+                val imagem = snapshot.child("imgUrl").getValue().toString()
 
 
-        val publicacoes = Pulicacao(descricao,pubId,titulo, uid,valor)
 
-        if(pubId != null) {
-            dbRef.child(uid).setValue(publicacoes)
-                .addOnCompleteListener {
+                val publicacoes = Pulicacao(descricao,imagem,pubId,titulo,nome,uid,valor)
 
-                    Toast.makeText(context, "Publicação Criada", Toast.LENGTH_SHORT).show()
+                if(pubId != null) {
+                    dbRef.child(pubId).setValue(publicacoes)
+                        .addOnCompleteListener {
+
+                            Toast.makeText(context, "Publicação Criada", Toast.LENGTH_SHORT).show()
+
+                        }
 
                 }
 
-        }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+
+        })
 
     }
 

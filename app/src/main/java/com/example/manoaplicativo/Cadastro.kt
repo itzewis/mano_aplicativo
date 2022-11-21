@@ -2,22 +2,16 @@ package com.example.manoaplicativo
 
 
 
-import android.annotation.SuppressLint
-import android.location.LocationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.databinding.ActivityCadastroBinding
-import com.example.manoaplicativo.fragmentos.Home
-import com.google.android.gms.common.api.GoogleApi.Settings
-import com.google.api.Context
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -35,10 +29,6 @@ class Cadastro : AppCompatActivity() {
     private lateinit var dbRef : DatabaseReference
     private lateinit var imgUrl : Uri
     private var STORAGE_PERMISSION_CODE = 113
-    //private var LOCALIZACAO_CODIGO = 2020
-
-    //lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +38,6 @@ class Cadastro : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-
-      // fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         // a linha abaixo é usada para pegar a
         // instancia do banco de dados
@@ -98,7 +86,9 @@ class Cadastro : AppCompatActivity() {
                     .addOnCompleteListener(this) {
                         if(it.isSuccessful) {
 
-                            //checkPermissions()
+
+                            salvarImagem()
+
 
                         } else {
                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
@@ -109,6 +99,7 @@ class Cadastro : AppCompatActivity() {
 
 
     }
+
 
 
 }
@@ -154,8 +145,6 @@ class Cadastro : AppCompatActivity() {
                 intent.type = "image/*"
                 startActivityForResult(intent,1)
 
-                salvarImagem()
-
             }else{
                 //caso seja negado
                 Toast.makeText(this, "Acesso negado", Toast.LENGTH_SHORT).show()
@@ -195,28 +184,25 @@ class Cadastro : AppCompatActivity() {
         val senha = binding.editSenhaC.text.toString()
         val nome = binding.editNomeC.text.toString()
 
-
-
         val usuario = Usuario(email,uId,imgUrl,nome,senha)
 
-        if(uId != null) {
-            dbRef.child(uId).setValue(usuario)
-                .addOnCompleteListener {
+        dbRef.child(uId).setValue(usuario)
+            .addOnCompleteListener {
 
-                    Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
 
-                    val intent = Intent(this,login::class.java)
-                    startActivity(intent)
-                    finish()
-                }
 
-        }
+                val intent = Intent(this,login::class.java)
+                startActivity(intent)
+                finish()
+            }
 
     }
 
 
 
     //para que a imagem escolhida apareca la no campo btnCamera
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

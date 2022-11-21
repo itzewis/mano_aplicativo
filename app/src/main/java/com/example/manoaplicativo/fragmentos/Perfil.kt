@@ -33,14 +33,11 @@ import de.hdodenhof.circleimageview.CircleImageView
 class Perfil : Fragment() {
 
     private lateinit var btnEditarPerfil: Button
-    private lateinit var bntfoto : ImageView
-    private lateinit var storageReference: StorageReference
-    private lateinit var storage: FirebaseStorage
-    private lateinit var database : FirebaseDatabase
-    private lateinit var dbRef : DatabaseReference
-    private lateinit var edtNome : TextView
+    private lateinit var bntfoto: ImageView
+    private lateinit var dbRef: DatabaseReference
+    private lateinit var edtNome: TextView
 
-    private lateinit var lista_publicacao : ArrayList<Pulicacao>
+    private lateinit var lista_publicacao: ArrayList<Pulicacao>
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -75,12 +72,10 @@ class Perfil : Fragment() {
 
         btnEditarPerfil.setOnClickListener {
 
-            val intent = Intent(context,EditarPerfil::class.java)
+            val intent = Intent(context, EditarPerfil::class.java)
             startActivity(intent)
 
         }
-
-
 
 
         mostrarDados()
@@ -90,30 +85,41 @@ class Perfil : Fragment() {
     }
 
 
-   private fun mostrarDados() {
+    //para mostrar o nome do usario e a foto que foi adicionada ao
+    //criar uma conta
+    private fun mostrarDados() {
 
-       val uId = FirebaseAuth.getInstance().currentUser!!.uid
+        val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-       dbRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uId)
+        dbRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(uId)
 
-       dbRef.addValueEventListener(object : ValueEventListener{
-           override fun onDataChange(snapshot: DataSnapshot) {
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
 
-                //nome do usuario na tela perfil
+                val user = snapshot.getValue<Usuario>(Usuario::class.java)!!
+                val image = snapshot.child("imgUrl").getValue().toString()
 
+                if (!image.equals("default")) {
 
-           }
+                    Picasso.get().load(image).placeholder(R.drawable.ic_launcher_background).into(bntfoto);
 
-           override fun onCancelled(error: DatabaseError) {
-               Toast.makeText(context, "Algo deu errado", Toast.LENGTH_SHORT).show()
-           }
+                }
 
-       })
+                edtNome.text = user.nome
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Algo deu errado", Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
     }
 
 
 
+    //mostrar as publicações feita pelo usuario que esta logado
     private fun pegarDados() {
 
         recyclerView.visibility = View.GONE
@@ -122,7 +128,7 @@ class Perfil : Fragment() {
 
         val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        dbRef.addValueEventListener(object : ValueEventListener{
+        dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 if (snapshot.exists()) {
@@ -130,7 +136,7 @@ class Perfil : Fragment() {
 
                         val dados = publiSnap.getValue(Pulicacao::class.java)
                         if (dados != null) {
-                            if(uId == dados.nomeUsuario)
+                            if (uId == dados.nomeUsuario)
 
                                 lista_publicacao.add(dados!!)
 
@@ -139,11 +145,12 @@ class Perfil : Fragment() {
 
                     }
 
+
                     val mAdapter = list_Adapter(lista_publicacao)
                     recyclerView.adapter = mAdapter
 
                     //clicar sobre um publicacao
-                    mAdapter.setOnClickListener(object : list_Adapter.onItemClickListener{
+                    mAdapter.setOnClickListener(object : list_Adapter.onItemClickListener {
                         override fun itemClick(position: Int) {
 
 
@@ -166,7 +173,7 @@ class Perfil : Fragment() {
 
 
                     recyclerView.visibility = View.VISIBLE
-                    
+
 
                 }
             }
@@ -179,7 +186,5 @@ class Perfil : Fragment() {
 
     }
 
-
-
-
 }
+

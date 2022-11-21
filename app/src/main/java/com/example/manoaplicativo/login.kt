@@ -1,22 +1,15 @@
 package com.example.manoaplicativo
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener
-
 
 
 class login : AppCompatActivity() {
@@ -27,7 +20,8 @@ class login : AppCompatActivity() {
     private lateinit var btnEsqueci: TextView
     private lateinit var auth: FirebaseAuth
     private var LOCATION_PERMISSION = 99
-
+    val PREF_NAME = "LoginActivityPreferences"
+    private lateinit var mPreferences: SharedPreferences
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +82,16 @@ class login : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val intent = Intent(this@login, MainActivity::class.java)
                     finish()
+
+                    mPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                    val editor: SharedPreferences.Editor = mPreferences.edit()
+                    editor.putString("email", email)
+                    editor.putString("senha", senha)
+                    editor.apply()
+
                     Toast.makeText(this, "Carregando...", Toast.LENGTH_SHORT).show()
                     startActivity(intent)
+
                 } else {
                     Toast.makeText(this@login, "Usuário não encontrado!", Toast.LENGTH_SHORT).show()
                 }
@@ -98,22 +100,6 @@ class login : AppCompatActivity() {
     }
 
 
-
-    var authStateListener =
-        AuthStateListener { firebaseAuth ->
-            val firebaseUser = firebaseAuth.currentUser
-            if (firebaseUser != null) {
-                val intent = Intent(this@login, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-
-    val firebaseAuth = FirebaseAuth.getInstance()
-    override fun onStart() {
-        super.onStart()
-        firebaseAuth.addAuthStateListener(authStateListener)
-    }
 
 
 }

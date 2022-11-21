@@ -20,6 +20,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.with
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.with
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.expandir_publicacao
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -49,11 +50,12 @@ class list_Adapter(val list_publicacao: ArrayList<Pulicacao>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val itemAtual = list_publicacao[position]
 
-
         holder.descricao.text = itemAtual.descricao
         holder.titulo.text = itemAtual.titulo
         holder.valor.text = itemAtual.valor
         holder.nomeUsuario.text = itemAtual.nomeUsuario
+
+        Picasso.get().load(itemAtual.imagem).into(holder.imgUrl)
 
 
     }

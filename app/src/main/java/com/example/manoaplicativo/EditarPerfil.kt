@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,8 +19,10 @@ import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.fragmentos.Perfil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import java.io.InputStream
 
 
@@ -36,7 +39,6 @@ class EditarPerfil : AppCompatActivity() {
     private lateinit var imagem : ImageView
 
 
-    private lateinit var usuario : Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,24 +48,13 @@ class EditarPerfil : AppCompatActivity() {
 
         dbRef = FirebaseDatabase.getInstance().getReference()
 
-        val btnVoltar = findViewById<ImageView>(R.id.btnVoltar)
-        val btnFoto = findViewById<ImageView>(R.id.btnFoto)
+        imagem= findViewById<ImageView>(R.id.btnFoto)
         val salvarAlteracoes = findViewById<Button>(R.id.salvarAlteracoes)
         nome = findViewById(R.id.nome)
         email = findViewById(R.id.email)
 
 
-
-
-
-        btnVoltar.setOnClickListener {
-
-            val intent = Intent(this@EditarPerfil,Perfil::class.java )
-            startActivity(intent)
-
-        }
-
-        btnFoto.setOnClickListener {
+        imagem.setOnClickListener {
             val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
@@ -107,23 +98,21 @@ class EditarPerfil : AppCompatActivity() {
 
         userRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val user = FirebaseAuth.getInstance()
 
-                if (user.currentUser != null){
+                        val user = snapshot.getValue<Usuario>(Usuario::class.java)!!
 
-                    user.currentUser?.let {
+                            email.text = user.email
+                            nome.text = user.nome
 
-                        val reference = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+                //vai pegar o link que esta localizado dentro do imgUrl
+                //transfromar em string e o Picasso vai passar esse valor
+                //para a imagemview
+                //caso de erro vai aparecer uma imagem toda verde
+                val image = snapshot.child("imgUrl").getValue().toString()
 
+                if (!image.equals("default")) {
 
-                        email.text = it.email
-                        nome.text = it.uid
-
-
-
-
-
-                    }
+                    Picasso.get().load(image).placeholder(R.drawable.ic_launcher_background).into(imagem);
 
                 }
 

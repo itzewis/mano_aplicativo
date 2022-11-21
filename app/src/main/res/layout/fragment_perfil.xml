@@ -19,13 +19,15 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="44dp"
             android:gravity="center"
             android:text="Emilly"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/btnConfig"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.519"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,13 +38,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="32dp"
             android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toTopOf="@+id/btnEditarPerfil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/userNome" />
 
         <Button
             android:id="@+id/btnEditarPerfil"
@@ -53,14 +53,15 @@
             android:layout_below="@+id/userfoto"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="152dp"
             android:text="Editar Perfil"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/framePerfil"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.479"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userfoto" />
 
         <ImageView
             android:id="@+id/btnConfig"
@@ -69,15 +70,15 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="36dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_configuracoes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/framePerfil"
-            android:layout_width="411dp"
-            android:layout_height="436dp"
+            android:layout_width="426dp"
+            android:layout_height="298dp"
             android:layout_alignParentBottom="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +88,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/areaPublicacao"
                 android:layout_width="wrap_content"
-                android:layout_height="494dp"
+                android:layout_height="206dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
