@@ -24,7 +24,6 @@ class expandir_publicacao : AppCompatActivity() {
 
         btnInteresse.setOnClickListener {
 
-
             enviarSolicitacao()
 
         }
@@ -40,38 +39,36 @@ class expandir_publicacao : AppCompatActivity() {
     private fun enviarSolicitacao() {
 
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        var database = FirebaseDatabase.getInstance().getReference("Solicitacao")
+        var dbRef = FirebaseDatabase.getInstance().getReference("Solicitacao")
 
-        database.addValueEventListener(object : ValueEventListener{
+        dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                var user = snapshot.getValue(Usuario::class.java)!!
-                var pub = snapshot.getValue<Pulicacao>(Pulicacao::class.java)!!
 
-                val nomeCliente = user.nome.toString()
-                val nomePrestador = pub.nomeUsuario.toString()
-                val uIdCliente = uid
-                val uIdPrestador = pub.uid
-                val valor = pub.valor.toString()
-                val solId = database.push().key
+                    if(uid != null){
 
-                val solicitacao = solicitacao(nomeCliente,nomePrestador,uIdCliente,uIdPrestador,solId,valor)
 
-                if(solId != null){
+                        val usuario = snapshot.getValue(Usuario::class.java)!!
 
-                    database.child(solId).setValue(solicitacao).addOnCompleteListener{
+                        val nomeCliente = usuario.nome
+                        val nomePrestador = intent.getStringExtra("uId")
+                        val valor = intent.getStringExtra("valor")
+                        val solId = dbRef.push().key!!
+                        val titulo = intent.getStringExtra("titulo")
 
-                        Toast.makeText(this@expandir_publicacao, "Uma solicitação foi enviada", Toast.LENGTH_SHORT).show()
+                        val solicitacao = solicitacao(nomeCliente, nomePrestador, titulo, solId, valor)
 
-                    }
 
-                        .addOnFailureListener {
+                        dbRef.child(solId).setValue(solicitacao).addOnCompleteListener {
 
-                            Toast.makeText(this@expandir_publicacao, "Erro ao enviar solicitação", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@expandir_publicacao, "Solicitação enviada", Toast.LENGTH_SHORT).show()
 
                         }
 
-                }
+
+                    }
+
+
 
 
             }
@@ -83,7 +80,11 @@ class expandir_publicacao : AppCompatActivity() {
 
         })
 
+
+
     }
+
+
 
 
     private fun setValues(){
