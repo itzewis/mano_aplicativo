@@ -5,7 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".fragmentos.Pedidos">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/areaPedidos"
+        android:layout_width="410dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="1dp"
+        tools:listitem="@layout/activity_list_pedidos">
 
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </FrameLayout>

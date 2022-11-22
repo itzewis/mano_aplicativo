@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.manoaplicativo.adapter.Pulicacao
 import com.example.manoaplicativo.adapter.Usuario
 import com.example.manoaplicativo.adapter.solicitacao
+import com.example.manoaplicativo.fragmentos.Publicacao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -39,35 +40,35 @@ class expandir_publicacao : AppCompatActivity() {
     private fun enviarSolicitacao() {
 
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        var dbRef = FirebaseDatabase.getInstance().getReference("Solicitacao")
+        val dbRef = FirebaseDatabase.getInstance().getReference("Solicitacao")
+        var refe = FirebaseDatabase.getInstance().getReference("Publicacoes")
 
-        dbRef.addValueEventListener(object : ValueEventListener{
+
+
+        refe.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-
-                    if(uid != null){
-
-
                         val usuario = snapshot.getValue(Usuario::class.java)!!
+                        val public = snapshot.getValue(Pulicacao::class.java)!!
 
-                        val nomeCliente = usuario.nome
                         val nomePrestador = intent.getStringExtra("uId")
                         val valor = intent.getStringExtra("valor")
-                        val solId = dbRef.push().key!!
+                        val pubId = dbRef.push().key
+                        var uidCliente = uid
                         val titulo = intent.getStringExtra("titulo")
 
-                        val solicitacao = solicitacao(nomeCliente, nomePrestador, titulo, solId, valor)
+                        val solicitacao = solicitacao(nomePrestador, pubId, titulo,uidCliente, valor)
 
 
-                        dbRef.child(solId).setValue(solicitacao).addOnCompleteListener {
+                if(pubId != null) {
+                    dbRef.child(pubId).setValue(solicitacao)
+                        .addOnCompleteListener {
 
-                            Toast.makeText(this@expandir_publicacao, "Solicitação enviada", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@expandir_publicacao, "Solicitação enviada para $nomePrestador", Toast.LENGTH_SHORT).show()
 
                         }
 
-
-                    }
-
+                }
 
 
 
@@ -93,8 +94,9 @@ class expandir_publicacao : AppCompatActivity() {
         val valor = findViewById<TextView>(R.id.valor)
         val titulo = findViewById<TextView>(R.id.titulo)
         val descricao = findViewById<TextView>(R.id.descricao)
+        val id = findViewById<TextView>(R.id.uid)
 
-
+        id.text = intent.getStringExtra("pubId")
         nome.text = intent.getStringExtra("uId")
         valor.text = intent.getStringExtra("valor")
         titulo.text = intent.getStringExtra("titulo")
