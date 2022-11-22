@@ -124,9 +124,9 @@ class Perfil : Fragment() {
 
         recyclerView.visibility = View.GONE
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes")
-
         val uId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        dbRef = FirebaseDatabase.getInstance().getReference("Publicacoes")
 
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -134,11 +134,11 @@ class Perfil : Fragment() {
                 if (snapshot.exists()) {
                     for (publiSnap in snapshot.children) {
 
-                        val dados = publiSnap.getValue(Pulicacao::class.java)
-                        if (dados != null) {
-                            if (uId == dados.nomeUsuario)
+                        val dados = publiSnap.getValue(Pulicacao::class.java)!!
 
-                                lista_publicacao.add(dados!!)
+                        if (uId == dados.uid){
+
+                            lista_publicacao.add(dados)
 
                         }
 

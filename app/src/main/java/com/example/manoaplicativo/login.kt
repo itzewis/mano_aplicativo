@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 
 
 class login : AppCompatActivity() {
@@ -20,6 +21,9 @@ class login : AppCompatActivity() {
     private lateinit var btnEsqueci: TextView
     private lateinit var auth: FirebaseAuth
     private var LOCATION_PERMISSION = 99
+
+
+
     val PREF_NAME = "LoginActivityPreferences"
     private lateinit var mPreferences: SharedPreferences
 
@@ -90,6 +94,7 @@ class login : AppCompatActivity() {
                     editor.apply()
 
                     Toast.makeText(this, "Carregando...", Toast.LENGTH_SHORT).show()
+                    finish()
                     startActivity(intent)
 
                 } else {
@@ -98,7 +103,6 @@ class login : AppCompatActivity() {
             }
 
     }
-
 
 
 

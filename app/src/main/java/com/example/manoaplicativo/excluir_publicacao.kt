@@ -1,14 +1,18 @@
 package com.example.manoaplicativo
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.manoaplicativo.adapter.Pulicacao
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
 
 class excluir_publicacao : AppCompatActivity() {
 
@@ -26,17 +30,12 @@ class excluir_publicacao : AppCompatActivity() {
 
         btnExcluirPubli.setOnClickListener {
 
-            excluirPublicacao()
+            Toast.makeText(this, "Em uma futura atualização", Toast.LENGTH_SHORT).show()
 
         }
 
     }
 
-    private fun excluirPublicacao() {
-
-    //deletar publicacoa
-
-    }
 
 
     private fun setValues(){

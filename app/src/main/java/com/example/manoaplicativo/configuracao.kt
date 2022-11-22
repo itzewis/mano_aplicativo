@@ -3,11 +3,11 @@ package com.example.manoaplicativo
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class configuracao : AppCompatActivity() {
@@ -19,9 +19,6 @@ class configuracao : AppCompatActivity() {
 
         val btnExcluir = findViewById<TextView>(R.id.btnExcluirConta)
         var btnSair = findViewById<TextView>(R.id.btnSair)
-
-
-
 
 
         btnSair.setOnClickListener {
@@ -39,11 +36,8 @@ class configuracao : AppCompatActivity() {
                 //caso clique no sim
                 builder.setPositiveButton("Sim"){dialogInterface, which ->
 
-                    //metodo to proprio firebase para fazer o log out do usuario
-                    mAuth.signOut()
+                    finish()
 
-                    val intent = Intent(this, login::class.java)
-                    startActivity(intent)
 
                 }
                 //caso clique em não ira voltar para onde estava
