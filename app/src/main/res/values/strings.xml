@@ -33,5 +33,7 @@
 
     <string name="deletar">Deseja realmente deletar a sua conta?</string>
 
+    <string name="pagamento">Pagamento realizado com sucesso!</string>
+    <string name="pag">Pagamento</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.manoaplicativo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -26,6 +27,9 @@ class expandir_publicacao : AppCompatActivity() {
         btnInteresse.setOnClickListener {
 
             enviarSolicitacao()
+
+            var intentm = Intent(this,formaPagamento::class.java)
+            startActivity(intentm)
 
         }
 

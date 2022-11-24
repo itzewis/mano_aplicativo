@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
@@ -36,6 +37,8 @@ class Pedidos : Fragment() {
         recyclerView.setHasFixedSize(true)
 
 
+
+
         lista_pedidos = arrayListOf<solicitacao>()
         list = arrayListOf<Usuario>()
 
@@ -57,10 +60,18 @@ class Pedidos : Fragment() {
                 if (snapshot.exists()) {
                     for (publiSnap in snapshot.children) {
 
+                        val uid = FirebaseAuth.getInstance().currentUser?.uid
                         val dados = publiSnap.getValue(solicitacao::class.java)
-                        lista_pedidos.add(dados!!)
+
+                        if (dados != null) {
+                            if(uid == dados.uidCliente){
+
+                                lista_pedidos.add(dados!!)
+
+                            }
 
 
+                        }
                     }
 
                     val mAdapter = list_pedidos(lista_pedidos)

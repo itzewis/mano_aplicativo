@@ -13,7 +13,7 @@
         android:layout_width="204dp"
         android:layout_height="178dp"
         android:layout_marginTop="28dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@mipmap/ic_launcher"
         app:civ_border_color="@color/black"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
