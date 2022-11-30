@@ -9,7 +9,7 @@ data class Usuario(
     val imgUrl: String? = null,
     val nome: String? = null,
     val senha:String? = null,
-    var tipoUsuario : String = "Cliente"
+    var numero : String? = null
 
 
 

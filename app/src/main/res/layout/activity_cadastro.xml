@@ -10,10 +10,10 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/btnCamera"
-        android:layout_width="204dp"
-        android:layout_height="178dp"
+        android:layout_width="180dp"
+        android:layout_height="162dp"
         android:layout_marginTop="28dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/oip"
         app:civ_border_color="@color/black"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,8 +24,8 @@
     <View
         android:id="@+id/componentes_entrada"
         style="@style/container"
-        android:layout_width="436dp"
-        android:layout_height="504dp"
+        android:layout_width="425dp"
+        android:layout_height="539dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -51,49 +51,65 @@
         style="@style/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:drawableStart="@drawable/ic_usuario"
-        android:hint="@string/nome_completo"
+        android:layout_marginTop="12dp"
         android:autofillHints="name"
+        android:drawableStart="@drawable/ic_usuario"
         android:drawablePadding="7dp"
+        android:hint="@string/nome_completo"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textCadastro" />
 
+
     <EditText
-        android:id="@+id/editEmailC"
+        android:id="@+id/editEmail"
         style="@style/edit_text"
-        android:hint="@string/email"
-        android:drawableStart="@drawable/ic_email"
         android:layout_width="match_parent"
-        android:drawablePadding="7dp"
-        android:autofillHints="emailAddress"
         android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
+        android:layout_marginTop="16dp"
+        android:autofillHints="emailAddress"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="7dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNomeC" />
+
+    <EditText
+        android:id="@+id/editTelefone"
+        style="@style/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:autofillHints="phone"
+        android:drawableStart="@drawable/ic_baseline_phone_24"
+        android:drawablePadding="7dp"
+        android:hint="@string/telefone"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/editSenhaC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNomeC"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/editEmail"
+        app:layout_constraintVertical_bias="0.785" />
 
     <EditText
         android:id="@+id/editSenhaC"
         style="@style/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:hint="@string/senha"
+        android:layout_marginBottom="60dp"
         android:autofillHints="password"
-        android:drawablePadding="7dp"
-        android:drawableEnd="@drawable/ic_nao_visivel"
         android:drawableStart="@drawable/ic_cadeado"
+        android:drawableEnd="@drawable/ic_nao_visivel"
+        android:drawablePadding="7dp"
+        android:hint="@string/senha"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/btnCriarConta"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmailC" />
-
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnCriarConta"

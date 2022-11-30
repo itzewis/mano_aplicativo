@@ -1,6 +1,7 @@
 package com.example.manoaplicativo
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -28,21 +29,39 @@ class expandir_publicacao : AppCompatActivity() {
         setContentView(R.layout.activity_expandir_publicacao)
 
         val btnInteresse = findViewById<Button>(R.id.btnInteresse)
-        var btnCaht = findViewById<Button>(R.id.btnChat)
+        val btnCaht = findViewById<Button>(R.id.btnChat)
 
         btnCaht.setOnClickListener {
 
-            var intent = Intent(this, bate_papo::class.java)
-            startActivity(intent)
+           val dbRef= FirebaseDatabase.getInstance().getReference("Usuarios")
+            val uid = FirebaseAuth.getInstance().currentUser?.uid!!
+
+            dbRef.child(uid).addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val usuario = snapshot.getValue(Usuario::class.java)
+
+                    val numero = usuario?.numero
+
+                    val url = "https:/api.whatsapp.com/send?phone=$numero"
+                    val it = Intent(Intent.ACTION_VIEW)
+                    it.setData(Uri.parse(url))
+                    startActivity(it)
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+
+            })
 
         }
 
         btnInteresse.setOnClickListener {
 
             enviarSolicitacao()
-
-            var intentm = Intent(this,formaPagamento::class.java)
-            startActivity(intentm)
 
         }
 

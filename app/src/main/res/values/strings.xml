@@ -36,4 +36,6 @@
     <string name="pagamento">Pagamento realizado com sucesso!</string>
     <string name="pag">Pagamento</string>
 
+    <string name="telefone">Telefone</string>
+
 </resources>

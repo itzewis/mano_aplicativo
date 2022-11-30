@@ -1,6 +1,7 @@
 package com.example.manoaplicativo.fragmentos
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manoaplicativo.R
 import com.example.manoaplicativo.adapter.*
+import com.example.manoaplicativo.expandir_publicacao
+import com.example.manoaplicativo.formaPagamento
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -76,6 +79,22 @@ class Pedidos : Fragment() {
 
                     val mAdapter = list_pedidos(lista_pedidos)
                     recyclerView.adapter = mAdapter
+
+
+                    mAdapter.setOnClickListener(object : list_pedidos.onItemClickListener{
+                        override fun itemClick(position: Int) {
+
+
+                            //para expandir e ve a publicaco completa e poder
+                            //entrar em contato o a pessoa que oferta o serviço
+                            val intent = Intent(context, formaPagamento::class.java)
+                            startActivity(intent)
+
+
+                        }
+                    })
+
+
 
                     recyclerView.visibility = View.VISIBLE
                 }

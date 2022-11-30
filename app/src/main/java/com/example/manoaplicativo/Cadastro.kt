@@ -63,39 +63,47 @@ class Cadastro : AppCompatActivity() {
 
 
         binding.btnCriarConta.setOnClickListener {
-            val email = binding.editEmailC.text.toString()
+            val email = binding.editEmail.text.toString()
             val senha = binding.editSenhaC.text.toString()
             val nome = binding.editNomeC.text.toString()
+            val telefone = binding.editTelefone.text.toString()
 
 
 
-            if(senha.isEmpty() || email.isEmpty() || nome.isEmpty()){
+            if(senha.isEmpty() || email.isEmpty() || nome.isEmpty() || telefone.isEmpty()){
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             }
 
-            if(senha.length < 6){
+            if(senha.length < 6) {
                 binding.editSenhaC.error = "Minímo 6 caracteres"
             }
+
+             if(telefone.length <= 11){
+
+                 binding.editTelefone.error = "Minimo 11 caracteres"
+
+             }
+             else{
+
+                 auth.createUserWithEmailAndPassword(email, senha)
+                     .addOnCompleteListener(this) {
+                         if(it.isSuccessful) {
+
+
+                             salvarImagem()
+
+
+                         } else {
+                             Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
+                         }
+                     }
+
+             }
 
             // se todas a condições acima forem verdadeiras
             // criara se o createUserWithEmailAndPassword
             // usando o objeto auth e passando a
             // senah e o email
-            else{
-                auth.createUserWithEmailAndPassword(email, senha)
-                    .addOnCompleteListener(this) {
-                        if(it.isSuccessful) {
-
-
-                            salvarImagem()
-
-
-                        } else {
-                            Toast.makeText(this, "Algo deu errado", Toast.LENGTH_SHORT).show()
-                        }
-                 }
-
-           }
 
 
     }
@@ -180,17 +188,17 @@ class Cadastro : AppCompatActivity() {
         val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
         //transformação vdas variaves de texto para string
-        val email = binding.editEmailC.text.toString()
+        val email = binding.editEmail.text.toString()
         val senha = binding.editSenhaC.text.toString()
         val nome = binding.editNomeC.text.toString()
+        val numero = binding.editTelefone.text.toString()
 
-        val usuario = Usuario(email,uId,imgUrl,nome,senha)
+        val usuario = Usuario(email,uId, imgUrl, nome, senha,numero)
 
         dbRef.child(uId).setValue(usuario)
             .addOnCompleteListener {
 
                 Toast.makeText(this, "Conta Criada", Toast.LENGTH_SHORT).show()
-
 
                 val intent = Intent(this,login::class.java)
                 startActivity(intent)
