@@ -36,6 +36,11 @@ class configuracao : AppCompatActivity() {
                 //caso clique no sim
                 builder.setPositiveButton("Sim"){dialogInterface, which ->
 
+                    FirebaseAuth.getInstance().signOut()
+
+                    var intent = Intent(this,login::class.java)
+                    intent.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
                     finish()
 
 

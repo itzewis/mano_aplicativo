@@ -6,20 +6,18 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.manoaplicativo.adapter.Usuario
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 
 
 class EditarPerfil : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var storage : StorageReference
+    private lateinit var storage : FirebaseStorage
     private lateinit var database : FirebaseDatabase
     private lateinit var dbRef : DatabaseReference
     private lateinit var imgUrl : Uri
@@ -53,14 +51,41 @@ class EditarPerfil : AppCompatActivity() {
         }
 
         salvarAlteracoes.setOnClickListener {
-            Toast.makeText(this, "Futuras atualizações", Toast.LENGTH_SHORT).show()
+            mudarFoto()
         }
 
         mostrarDados()
 
     }
 
+    private fun mudarFoto() {
 
+            val uId = FirebaseAuth.getInstance().currentUser!!.uid
+
+            val referencia = storage.reference.child("imagens").child(uId)
+            referencia.putFile(imgUrl).addOnCompleteListener{
+                if(it.isSuccessful){
+                    referencia.downloadUrl.addOnSuccessListener { task ->
+
+                        atualizarRealtime(imgUrl)
+
+                    }
+                }
+
+            }
+
+
+    }
+
+    private fun atualizarRealtime(imgUrl: Uri) {
+
+        var uid = FirebaseAuth.getInstance().currentUser?.uid!!
+
+        val ref = FirebaseDatabase.getInstance().getReference("Usuarios").child(uid)
+        var usuario = Usuario(email.toString(),uid,imgUrl.toString(),nome.toString(),senha = null)
+        ref.setValue(imgUrl)
+
+    }
 
 
     //para que a imagem escolhida apareca la no campo btnCamera
@@ -107,7 +132,7 @@ class EditarPerfil : AppCompatActivity() {
 
                     Picasso.get().load(image).placeholder(R.drawable.ic_launcher_background).into(
                         this@EditarPerfil.imagem
-                    );
+                    )
 
                 }
 

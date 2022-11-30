@@ -111,27 +111,14 @@
 
     <Button
         android:id="@+id/btnChat"
+        style="@style/botao"
         android:layout_width="110dp"
         android:layout_height="55dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="44dp"
         android:text="Chat"
-        android:textColor="@color/white"
-        style="@style/botao"
         android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/valor" />
-
-    <Button
-        android:id="@+id/btnAvaliacao"
-        android:layout_width="110dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="48dp"
-        android:text="Avaliação"
-        style="@style/botao"
         android:textColor="@color/white"
-        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/valor" />
 

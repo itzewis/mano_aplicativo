@@ -83,7 +83,6 @@ class Criar_Publicacao : Fragment() {
                 val imagem = snapshot.child("imgUrl").getValue().toString()
 
 
-
                 val publicacoes = Pulicacao(descricao,imagem,pubId,titulo,nome,uid,valor)
 
                 if(pubId != null) {
